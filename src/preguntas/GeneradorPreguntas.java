@@ -1,5 +1,9 @@
-package core.preguntas;
+package preguntas;
 
 public class GeneradorPreguntas {
-
+	
+	
+	
+	
 }
+
