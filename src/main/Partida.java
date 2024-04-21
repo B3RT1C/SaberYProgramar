@@ -1,8 +1,8 @@
 package main;
 
-public class Main {
+public class Partida {
 	public static void main(String[] args) {
-		
+		//TODO startup();
 		
 		
 	}
