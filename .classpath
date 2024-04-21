@@ -6,7 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="testArea"/>
 	<classpathentry kind="lib" path="lib/exp4j-0.4.8j.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
