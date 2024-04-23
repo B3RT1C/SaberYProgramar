@@ -1,18 +1,35 @@
 package preguntas;
 
+import java.io.IOException;
+
+import util.Consts;
+
 public abstract class Pregunta {
-	private String tipo;
 	private String enunciado;
 	private String solucion;
 	
-	Pregunta(String tipo, String enunciado, String solucion) {
-		this.tipo = tipo;
-		this.enunciado = enunciado;
-		this.solucion = solucion;
-	}
+	protected Pregunta() {}
 	
-	public String getTipo() {
-		return this.tipo;
+	protected abstract String generarEnunciado();
+	protected abstract String generarSolucion();
+	
+	public static Pregunta generarAleatoria() {
+		String randomTipoPregunta = Consts.TIPOS_PREGUNTAS[Consts.RAND.nextInt(0, Consts.TIPOS_PREGUNTAS.length)];
+		Pregunta pregunta = new Mates();
+		//En el caso de que el new Letras() o new Ingles() lance una excepción, pregunta siempre será de tipo Mates y la excepción será capturada por el try catch
+		try {
+			if (randomTipoPregunta.equals(Letras.class.getSimpleName())) {
+				pregunta = new Letras();
+			
+			} else if (randomTipoPregunta.equals(Ingles.class.getSimpleName())) {
+				pregunta = new Ingles();				
+			}
+		} catch (IOException e) {
+			System.out.println(Consts.MENSAJE_ERROR_CREAR_PREGUNTA);
+		}
+
+		return pregunta;
+	
 	}
 
 	public String getEnunciado() {

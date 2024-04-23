@@ -1,8 +1,8 @@
-package menu;
+package interfaces;
 
 import jugadores.Jugador;
 
-public abstract class Menu {
+public interface Menu {
 	public abstract void mostrarPrincipal();
 	public abstract String elegirPrincipal();
 	

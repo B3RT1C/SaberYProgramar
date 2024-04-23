@@ -8,12 +8,15 @@ public abstract class Jugador {
 
 	protected Jugador(String nombre) {
 		this.puntosPartida = 0;
-		this.nombre = null; 
+		this.nombre = nombre;
 	}
 
-	//TODO ¿?
-	protected abstract String setNombre(String nombre); 
+	public abstract boolean responder(Pregunta pregunta);
 
+	public String getNombre() {
+		return this.nombre;
+	}
+	
 	public int getPuntosPartida() {
 		return this.puntosPartida;
 	}
@@ -22,7 +25,4 @@ public abstract class Jugador {
 			this.puntosPartida++;
 		}
 	}
-	
-	public abstract boolean responder(Pregunta pregunta); 
-
 }
