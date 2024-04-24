@@ -18,6 +18,9 @@ public class Consts {
 	public static final Path RANKING_PATH = Paths.get("./file/ranking.txt");
 	
 	public static final String MENSAJE_ERROR_CREAR_PREGUNTA = "ERROR: no se pudo crear una pregunta de tipo letras/ingles, se creará una de tipo Mates";
+	public static final String MENSAJE_ERROR_ESCRIBIR_ARCHIVO = "ERROR: no se pudo escribir en el archivo";
+	public static final String MENSAJE_ERROR_LEER_ARCHIVO = "ERROR: no se pudo leer el archivo";
+	public static final String MENSAJE_ERROR_CREAR_ARCHIVO = "ERROR: no se pudo crear el archivo";
 	
 	public static final double RATIO_ESCONDER_LETRAS = 1d/3d;
 

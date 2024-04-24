@@ -3,7 +3,7 @@ package main.consola;
 import interfaces.Menu;
 import jugadores.Jugador;
 
-public class MenuConsola implements Menu {
+public class JuegoConsola implements Menu {
 
 	@Override
 	public void mostrarPrincipal() {

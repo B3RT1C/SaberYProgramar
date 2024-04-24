@@ -9,7 +9,7 @@ import interfaces.LectorArchivos;
 import util.Consts;
 
 public class Ingles extends Pregunta implements LectorArchivos {
-	public ArrayList<String> preguntasRespuestas = new ArrayList<>();
+	public static ArrayList<String> preguntasRespuestas = new ArrayList<>();
 	private ArrayList<String> opciones = new ArrayList<>();
 	
 	public Ingles() throws IOException {

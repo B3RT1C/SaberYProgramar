@@ -1,6 +1,5 @@
 package preguntas;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class Letras extends Pregunta implements LectorArchivos {
 		return new String(palabra);
 	}
 	
-
 	@Override
 	protected String generarSolucion() {
 		return palabras.get(Consts.RAND.nextInt(0, palabras.size()));
@@ -40,11 +38,7 @@ public class Letras extends Pregunta implements LectorArchivos {
 	@Override
 	public void leerArchivo() throws IOException {
 		if (palabras.isEmpty()) {
-			try {
-				palabras = (ArrayList<String>)Files.readAllLines(Consts.DICCIONARIO_PATH);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+			palabras = (ArrayList<String>)Files.readAllLines(Consts.DICCIONARIO_PATH);
 		}
 	}
 	
