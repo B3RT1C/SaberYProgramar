@@ -13,6 +13,7 @@ public class Letras extends Pregunta implements LectorArchivos {
 	
 	public Letras() throws IOException {
 		this.leerArchivo();
+		this.filtrarPalabras();
 		super.setSolucion(this.generarSolucion());
 		super.setEnunciado(this.generarEnunciado());
 	}
@@ -21,7 +22,7 @@ public class Letras extends Pregunta implements LectorArchivos {
 	protected String generarEnunciado() {
 		char[] palabra = this.getSolucion().toCharArray();
 		
-		ArrayList<Integer> posicionLetrasOcultar = indiceAleatorioPalabra(palabra.length);
+		ArrayList<Integer> posicionLetrasOcultar = this.indiceAleatorioPalabra(palabra.length);
 		
 		for (int i : posicionLetrasOcultar) {
 			palabra[i] = '*';
@@ -57,6 +58,14 @@ public class Letras extends Pregunta implements LectorArchivos {
 		
 		
 		return (ArrayList<Integer>)(indicesLetrasPalabra.subList(0, numLetrasOcultar));
+	}
+	
+	private void filtrarPalabras() {
+		for (String i : palabras) {
+			if (i.length() <= 3) {
+				palabras.remove(i);
+			}
+		}
 	}
 	
 }

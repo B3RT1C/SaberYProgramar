@@ -7,8 +7,8 @@ public abstract class Jugador {
 	private int puntosPartida;
 
 	protected Jugador(String nombre) {
-		this.puntosPartida = 0;
 		this.nombre = nombre;
+		this.puntosPartida = 0;
 	}
 
 	public abstract boolean responder(Pregunta pregunta);
@@ -20,7 +20,7 @@ public abstract class Jugador {
 	public int getPuntosPartida() {
 		return this.puntosPartida;
 	}
-	public void actualizarPuntosPartida(boolean preguntaAcertada) {
+	public void preguntaAcertada(boolean preguntaAcertada) {
 		if (preguntaAcertada) {
 			this.puntosPartida++;
 		}

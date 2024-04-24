@@ -1,4 +1,4 @@
-package util;
+package gestores;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,13 +8,14 @@ import java.util.Collections;
 
 import interfaces.EscritorArchivos;
 import interfaces.LectorArchivos;
+import util.Consts;
 
-public class Ranking implements LectorArchivos, EscritorArchivos{
+public class Ranking implements LectorArchivos, EscritorArchivos {
 	private ArrayList<String> ranking = new ArrayList<>();
 	private ArrayList<String> nombreJugadores = new ArrayList<>();
 	private ArrayList<Integer> partidasGanadasJugadores = new ArrayList<>();
 
-	public Ranking() {
+	Ranking() {
 		this.verificarExistenciaArchivo();
 		this.leerArchivo();
 	}
@@ -31,24 +32,23 @@ public class Ranking implements LectorArchivos, EscritorArchivos{
 	}
 
 	public ArrayList<String> getRanking() {
-		this.actualizarFicheroRanking();
 		return this.ranking;
 	}
 	
-	public ArrayList<Integer> getPartidasGanadasJugadores() {
-		this.actualizarFicheroRanking();
+	public ArrayList<Integer> getPartidasGanadas() {
 		return this.partidasGanadasJugadores;
 	}
 	
-	public ArrayList<String> getNombreJugadores() {
-		this.actualizarFicheroRanking();
+	public ArrayList<String> getNombres() {
 		return this.nombreJugadores;
 	}
 	
-	public boolean addJugador(String nombre) {
-		if (!this.jugadorExists(nombre)) {
+	public boolean add(String nombre) {
+		nombre = nombre.toUpperCase();
+		if (!this.exists(nombre)) {
 			this.nombreJugadores.add(nombre);
 			this.partidasGanadasJugadores.add(0);
+			this.actualizarFicheroRanking();
 			return true;
 		
 		} else {
@@ -56,11 +56,13 @@ public class Ranking implements LectorArchivos, EscritorArchivos{
 		}
 	}
 		
-	public boolean removeJugador(String nombre) {
-		if (this.jugadorExists(nombre)) {
-			int index = this.findIndiceJugador(nombre);
+	public boolean remove(String nombre) {
+		nombre = nombre.toUpperCase();
+		if (this.exists(nombre)) {
+			int index = this.findIndice(nombre);
 			this.nombreJugadores.remove(index);
 			this.partidasGanadasJugadores.remove(index);
+			this.actualizarFicheroRanking();
 			return true;
 
 		} else {
@@ -68,16 +70,18 @@ public class Ranking implements LectorArchivos, EscritorArchivos{
 		}
 	}
 	
-	public int findIndiceJugador(String nombre) {
+	public int findIndice(String nombre) {
+		nombre = nombre.toUpperCase();
 		return this.nombreJugadores.indexOf(nombre);
 	}
 	
-	public boolean jugadorExists(String nombre) {
-		return (this.findIndiceJugador(nombre) != -1);
+	public boolean exists(String nombre) {
+		nombre = nombre.toUpperCase();
+		return (this.findIndice(nombre) != -1);
 	}
 	
 	public void partidaGanada(String nombre) {
-		int index = this.findIndiceJugador(nombre);
+		int index = this.findIndice(nombre);
 		int partidasGanadas = this.partidasGanadasJugadores.get(index);
 		this.partidasGanadasJugadores.set(index, partidasGanadas+1);
 		this.actualizarFicheroRanking();
@@ -120,7 +124,7 @@ public class Ranking implements LectorArchivos, EscritorArchivos{
 		return valoresDiferentes;
 	}
 	
-	//Se llama a este método cada vez que se llama a partidaGanada o algún get público
+	//Se llama a este método cada vez que se llama a partidaGanada o se crea o borra un jugador
 	private void actualizarFicheroRanking() {
 		this.ordenarRanking();
 		this.escribirArchivo();
@@ -130,10 +134,11 @@ public class Ranking implements LectorArchivos, EscritorArchivos{
 	@Override
 	public void escribirArchivo() {
 		try {
+			//Sobreescribe todo el archivo a una cadena sin nada/borra el contenido del archivo
 			Files.writeString(Consts.RANKING_PATH, "");
 			
 			for (int i = 0; i < nombreJugadores.size(); i++) {
-				String registro = nombreJugadores.get(i) + " " + partidasGanadasJugadores.get(i);
+				String registro = nombreJugadores.get(i) + " " + partidasGanadasJugadores.get(i) + "\n";
 	
 					Files.writeString(Consts.RANKING_PATH, registro, StandardOpenOption.APPEND);
 			}
@@ -145,17 +150,28 @@ public class Ranking implements LectorArchivos, EscritorArchivos{
 	
 	@Override
 	public void leerArchivo() {
+		ArrayList<String> aux = new ArrayList<>();
 		try {
-			this.ranking = (ArrayList<String>)Files.readAllLines(Consts.RANKING_PATH);
+			aux = (ArrayList<String>)Files.readAllLines(Consts.RANKING_PATH);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println(Consts.MENSAJE_ERROR_LEER_ARCHIVO);
 		}
 		
-		for (String i : this.ranking) {
+		for (String i : aux) {
 			String[] datosJugador = i.split(" ");
-			this.nombreJugadores.add(datosJugador[0]);
-			this.partidasGanadasJugadores.add(Integer.valueOf(datosJugador[1]));
+
+			/*Se escriben promero el número de partidas ganadas para que si salta un indexOutOfBounds o un
+			 * numberFormatException que se capture la excepción y no se guarde en los ArrayLists
+			 * Así el programa continua aunque existan datos con el formato incorrecto en el arhivo,
+			 * este caso no se puede dar a menos que el usuario cambie manualmente el ranking
+			*/
+			try {
+				this.partidasGanadasJugadores.add(Integer.valueOf(datosJugador[1]));
+				this.nombreJugadores.add(datosJugador[0]);				
+				this.ranking.add(i);
+			} catch (Exception e) {
+			}
 		}
 	}	
 }

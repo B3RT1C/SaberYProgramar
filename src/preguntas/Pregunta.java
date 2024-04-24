@@ -29,7 +29,6 @@ public abstract class Pregunta {
 		}
 
 		return pregunta;
-	
 	}
 
 	public String getEnunciado() {

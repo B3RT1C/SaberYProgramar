@@ -9,8 +9,7 @@ import preguntas.Pregunta;
 import util.Consts;
 
 public class Cpu extends Jugador {
-
-	protected Cpu(String nombre) {
+	public Cpu(String nombre) {
 		super(nombre);
 	}
 

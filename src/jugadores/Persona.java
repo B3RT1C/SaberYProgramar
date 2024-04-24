@@ -3,7 +3,7 @@ package jugadores;
 import preguntas.Pregunta;
 
 public class Persona extends Jugador{
-	protected Persona(String nombre) {
+	public Persona(String nombre) {
 		super(nombre);
 	}
 
