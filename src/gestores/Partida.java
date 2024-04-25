@@ -10,27 +10,26 @@ public class Partida {
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
 	private ArrayList<Pregunta> preguntas = new ArrayList<>();
 	
-	private int numPreguntas;
+	Partida() {}
 	
-	public Partida(int numRondas, int numJugadores) {
-		this.numPreguntas = numRondas*numJugadores;
-		this.generarPreguntas();
+	public void setNumRondas(int numRondas) {
+		this.generarPreguntas(numRondas*this.jugadores.size());
+	}
+	
+	private void generarPreguntas(int numPreguntas) {
+		for (int i = 0; i < numPreguntas; i++) {
+			this.preguntas.add(Pregunta.generarAleatoria());
+		}
 	}
 	
 	public ArrayList<Jugador> getJugadores() {
 		return this.jugadores;
 	}
 	
-	private void generarPreguntas() {
-		for (int i = 0; i < numPreguntas; i++) {
-			preguntas.add(Pregunta.generarAleatoria());
-		}
-	}
-	
 	public boolean addJugador(Jugador jugador) {
 		if (jugadores.contains(jugador)) {
-			jugadores.add(jugador);
-			Collections.shuffle(jugadores);
+			this.jugadores.add(jugador);
+			Collections.shuffle(this.jugadores);
 			return true;
 			
 		} else {
@@ -38,15 +37,27 @@ public class Partida {
 		}
 	}
 	
+	public <T> T nextEnCola(ArrayList<T> cola, boolean rotate) {
+		try {
+			T primeroEnCola = cola.get(0);
+			cola.remove(0);
+			
+			if (rotate) {
+				cola.add(primeroEnCola);
+			}
+			return primeroEnCola;
+
+		} catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+	
 	public Pregunta nextPregunta() {
-		this.preguntas.remove(0);
-		return this.preguntas.get(0);
+		return this.nextEnCola(this.preguntas, false);
 	}
 	
 	public Jugador nextJugador() {
-		Jugador primerJugadorEnCola = jugadores.get(0);
-		Collections.rotate(jugadores, -1);
-		return primerJugadorEnCola;
+		return this.nextEnCola(this.jugadores, true);
 	}
 	
 	
