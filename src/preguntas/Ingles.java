@@ -5,10 +5,9 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import interfaces.LectorArchivos;
 import util.Consts;
 
-public class Ingles extends Pregunta implements LectorArchivos {
+public class Ingles extends Pregunta {
 	public static ArrayList<String> preguntasRespuestas = new ArrayList<>();
 	private ArrayList<String> opciones = new ArrayList<>();
 	
@@ -24,10 +23,9 @@ public class Ingles extends Pregunta implements LectorArchivos {
 		return opciones;
 	}
 
-	@Override
 	public void leerArchivo() throws IOException {
 		if (preguntasRespuestas.isEmpty()) {
-			preguntasRespuestas = (ArrayList<String>)Files.readAllLines(Consts.INGLES_PATH);
+			preguntasRespuestas = (ArrayList<String>)Files.readAllLines(Consts.PATH_INGLES);
 		}
 	}
 	

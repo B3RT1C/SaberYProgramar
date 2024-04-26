@@ -10,10 +10,20 @@ public class Partida {
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
 	private ArrayList<Pregunta> preguntas = new ArrayList<>();
 	
-	Partida() {}
+	private int numJugadores;
 	
-	public void setNumRondas(int numRondas) {
-		this.generarPreguntas(numRondas*this.jugadores.size());
+	protected Partida() {}
+	
+	//Para usar la clase bien hay que llamar al método configurar y luego añadir los jugadores
+	public void configurar(int numJugadores, int numRondas) {
+		this.reiniciarPartida();
+		this.numJugadores = numJugadores;
+		this.generarPreguntas(numJugadores*numRondas);
+	}
+	
+	private void reiniciarPartida() {
+		this.jugadores.clear();
+		this.preguntas.clear();
 	}
 	
 	private void generarPreguntas(int numPreguntas) {
@@ -27,9 +37,14 @@ public class Partida {
 	}
 	
 	public boolean addJugador(Jugador jugador) {
-		if (jugadores.contains(jugador)) {
+		if (!jugadores.contains(jugador)) {
 			this.jugadores.add(jugador);
-			Collections.shuffle(this.jugadores);
+
+			if (this.jugadores.size() == numJugadores) {
+				this.jugadores.remove(0);
+			}
+			Collections.shuffle(this.jugadores);				
+			
 			return true;
 			
 		} else {
@@ -60,5 +75,23 @@ public class Partida {
 		return this.nextEnCola(this.jugadores, true);
 	}
 	
+	public boolean isFinished() {
+		return this.preguntas.size() == 0;
+	}
+	
+	public String getPuntuacion() {
+		String puntuacion = "";
+		
+		for (Jugador i : this.jugadores) {
+			puntuacion += i.getNombre() + ":" + i.getPuntosPartida() + " ";
+		}
+		return puntuacion;
+	}
+	
+	public void terminarPartida() {
+		if (this.isFinished()) {
+			Gestor.historial.escribirArchivo();
+		}
+	}
 	
 }

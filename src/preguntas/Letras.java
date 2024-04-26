@@ -5,10 +5,9 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import interfaces.LectorArchivos;
 import util.Consts;
 
-public class Letras extends Pregunta implements LectorArchivos {
+public class Letras extends Pregunta {
 	private static ArrayList<String> palabras = new ArrayList<>();
 	
 	public Letras() throws IOException {
@@ -36,10 +35,9 @@ public class Letras extends Pregunta implements LectorArchivos {
 		return palabras.get(Consts.RAND.nextInt(0, palabras.size()));
 	}
 	
-	@Override
 	public void leerArchivo() throws IOException {
 		if (palabras.isEmpty()) {
-			palabras = (ArrayList<String>)Files.readAllLines(Consts.DICCIONARIO_PATH);
+			palabras = (ArrayList<String>)Files.readAllLines(Consts.PATH_DICCIONARIO);
 		}
 	}
 	

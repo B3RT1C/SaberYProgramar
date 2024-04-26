@@ -2,37 +2,32 @@ package gestores;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import interfaces.EscritorArchivos;
-import interfaces.LectorArchivos;
 import util.Consts;
 
-public class Ranking implements LectorArchivos, EscritorArchivos {
+public class Ranking {
 	private ArrayList<String> ranking = new ArrayList<>();
 	private ArrayList<String> nombreJugadores = new ArrayList<>();
 	private ArrayList<Integer> partidasGanadasJugadores = new ArrayList<>();
 
-	Ranking() {
-		this.verificarExistenciaArchivo();
+	protected Ranking() {
+		this.verificarExistenciaArchivo(Consts.PATH_RANKING);
 		this.leerArchivo();
 	}
 	
-	private void verificarExistenciaArchivo() {
-		if (!Files.exists(Consts.RANKING_PATH)) {
+	private void verificarExistenciaArchivo(Path path) {
+		if (!Files.exists(path)) {
 			try {
-				Files.createFile(Consts.RANKING_PATH);
+				Files.createFile(path);
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.err.println(Consts.MENSAJE_ERROR_CREAR_ARCHIVO);
 			}
 		}
-	}
-
-	public ArrayList<String> getRanking() {
-		return this.ranking;
 	}
 	
 	public ArrayList<Integer> getPartidasGanadas() {
@@ -43,12 +38,16 @@ public class Ranking implements LectorArchivos, EscritorArchivos {
 		return this.nombreJugadores;
 	}
 	
-	public boolean add(String nombre) {
-		nombre = nombre.toUpperCase();
-		if (!this.exists(nombre)) {
-			this.nombreJugadores.add(nombre);
+	public ArrayList<String> getRanking() {
+		return this.ranking;
+	}
+	
+	public boolean crearJugador(String jugador) {
+		jugador = jugador.toUpperCase();
+		if (!this.existsJugador(jugador)) {
+			this.nombreJugadores.add(jugador);
 			this.partidasGanadasJugadores.add(0);
-			this.actualizarFicheroRanking();
+			this.actualizarRanking();
 			return true;
 		
 		} else {
@@ -56,13 +55,13 @@ public class Ranking implements LectorArchivos, EscritorArchivos {
 		}
 	}
 		
-	public boolean remove(String nombre) {
-		nombre = nombre.toUpperCase();
-		if (this.exists(nombre)) {
-			int index = this.findIndice(nombre);
+	public boolean removeJugador(String jugador) {
+		jugador = jugador.toUpperCase();
+		if (this.existsJugador(jugador)) {
+			int index = this.findIndiceJugador(jugador);
 			this.nombreJugadores.remove(index);
 			this.partidasGanadasJugadores.remove(index);
-			this.actualizarFicheroRanking();
+			this.actualizarRanking();
 			return true;
 
 		} else {
@@ -70,21 +69,21 @@ public class Ranking implements LectorArchivos, EscritorArchivos {
 		}
 	}
 	
-	public int findIndice(String nombre) {
+	public int findIndiceJugador(String nombre) {
 		nombre = nombre.toUpperCase();
 		return this.nombreJugadores.indexOf(nombre);
 	}
 	
-	public boolean exists(String nombre) {
+	public boolean existsJugador(String nombre) {
 		nombre = nombre.toUpperCase();
-		return (this.findIndice(nombre) != -1);
+		return this.nombreJugadores.contains(nombre);
 	}
 	
 	public void partidaGanada(String nombre) {
-		int index = this.findIndice(nombre);
+		int index = this.findIndiceJugador(nombre);
 		int partidasGanadas = this.partidasGanadasJugadores.get(index);
 		this.partidasGanadasJugadores.set(index, partidasGanadas+1);
-		this.actualizarFicheroRanking();
+		this.actualizarRanking();
 	}
 	
 	private void ordenarRanking() {
@@ -125,22 +124,19 @@ public class Ranking implements LectorArchivos, EscritorArchivos {
 	}
 	
 	//Se llama a este método cada vez que se llama a partidaGanada o se crea o borra un jugador
-	private void actualizarFicheroRanking() {
+	public void actualizarRanking() {
 		this.ordenarRanking();
 		this.escribirArchivo();
-		this.leerArchivo();
 	}
 
-	@Override
-	public void escribirArchivo() {
+	private void escribirArchivo() {
 		try {
 			//Sobreescribe todo el archivo a una cadena sin nada/borra el contenido del archivo
-			Files.writeString(Consts.RANKING_PATH, "");
+			Files.writeString(Consts.PATH_RANKING, "");
 			
 			for (int i = 0; i < nombreJugadores.size(); i++) {
 				String registro = nombreJugadores.get(i) + " " + partidasGanadasJugadores.get(i) + "\n";
-	
-					Files.writeString(Consts.RANKING_PATH, registro, StandardOpenOption.APPEND);
+				Files.writeString(Consts.PATH_RANKING, registro, StandardOpenOption.APPEND);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -148,11 +144,10 @@ public class Ranking implements LectorArchivos, EscritorArchivos {
 		}
 	}
 	
-	@Override
-	public void leerArchivo() {
+	private void leerArchivo() {
 		ArrayList<String> aux = new ArrayList<>();
 		try {
-			aux = (ArrayList<String>)Files.readAllLines(Consts.RANKING_PATH);
+			aux = (ArrayList<String>)Files.readAllLines(Consts.PATH_RANKING);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println(Consts.MENSAJE_ERROR_LEER_ARCHIVO);
