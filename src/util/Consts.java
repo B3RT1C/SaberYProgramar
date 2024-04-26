@@ -18,11 +18,15 @@ public class Consts {
 	public static final Path PATH_RANKING = Paths.get("./file/ranking.txt");
 	public static final Path PATH_HISTORIAL = Paths.get("./file/historial.txt");
 	public static final Path PATH_LOG = Paths.get("./file/salida.log");
+	public static Path PATH_MOVER_LOG(String fechaArchivo) {
+		return Paths.get("./historico/salida.log"+"."+fechaArchivo);
+	}
 	
 	public static final String MENSAJE_ERROR_CREAR_PREGUNTA = "ERROR: no se pudo crear una pregunta de tipo letras/ingles, se creará una de tipo Mates";
 	public static final String MENSAJE_ERROR_ESCRIBIR_ARCHIVO = "ERROR: no se pudo escribir en el archivo";
 	public static final String MENSAJE_ERROR_LEER_ARCHIVO = "ERROR: no se pudo leer el archivo";
 	public static final String MENSAJE_ERROR_CREAR_ARCHIVO = "ERROR: no se pudo crear el archivo";
+	public static final String MENSAJE_ERROR_MOVER_ARCHIVO = "ERROR: no se pudo mover el archivo";
 	
 	public static final double RATIO_ESCONDER_LETRAS = 1d/3d;
 

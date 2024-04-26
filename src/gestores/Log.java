@@ -2,28 +2,28 @@ package gestores;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import util.Consts;
 
 public class Log {
-	ArrayList<String> log = new ArrayList<>();
-	LocalTime time = LocalTime.now();
-	LocalDate date = LocalDate.now();
-	LocalDateTime dateTime = LocalDateTime.now();
+	private ArrayList<String> log = new ArrayList<>();
+	private String fechaLog;
 	
 	protected Log() {
-		this.verificarExistenciaArchivo(Consts.PATH_LOG);
+		this.verificarExistenciaArchivo();
+		this.leerArchivo();
+		this.setFechaLog();
 	}
 
-	private void verificarExistenciaArchivo(Path path) {
-		if (!Files.exists(path)) {
+	private void verificarExistenciaArchivo() {
+		if (!Files.exists(Consts.PATH_LOG)) {
 			try {
-				Files.createFile(path);
+				Files.createFile(Consts.PATH_LOG);
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.err.println(Consts.MENSAJE_ERROR_CREAR_ARCHIVO);
@@ -31,24 +31,62 @@ public class Log {
 		}
 	}
 	
-	public void leerArchivo() throws IOException {
+	private void leerArchivo() {
 		try {
 			this.log = (ArrayList<String>)Files.readAllLines(Consts.PATH_LOG);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println(Consts.MENSAJE_ERROR_LEER_ARCHIVO);
+			this.fechaLog = null;
 		}
 	}
 	
-	public void veificarLogHoy() {
-		//TODO
-	}
-
-	private void escribirArchivo() {
-		// TODO Auto-generated method stub
-		
+	private void setFechaLog() {
+		if (this.log.isEmpty()) {
+			this.fechaLog = null;
+		} else {
+			this.fechaLog = this.getFechaRegistro(this.log.get(this.log.size()-1));
+		}
 	}
 	
-	public void 
+	private String getFechaRegistro(String registro) {
+		String[] datos = registro.split("\\[|\\]\\[|\\]: ");
+        return datos[1];
+	}
+	
+	private void veificarLogHoy() {
+		if (!this.getFecha().equals(this.fechaLog) || this.fechaLog == null) {
+			String[] fecha = this.fechaLog.split("/");
+			try {
+				Files.move(Consts.PATH_LOG, Consts.PATH_MOVER_LOG(fecha[2]+fecha[1]+fecha[0]));
+				this.verificarExistenciaArchivo();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println(Consts.MENSAJE_ERROR_MOVER_ARCHIVO);
+			}
+		}
+	}
 
+	public void escribirRegistro(String linea) {
+		this.setFechaLog();
+		this.veificarLogHoy();
+		
+		linea = "["+ this.getFecha() +"]" + "["+this.getHora()+"]: " + linea;
+		try {
+			Files.writeString(Consts.PATH_LOG, linea, StandardOpenOption.APPEND);
+			this.log.add(linea);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(Consts.MENSAJE_ERROR_ESCRIBIR_ARCHIVO);
+		}
+	}
+	
+	private String getFecha() {
+		return LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	}
+	
+	private String getHora() {
+		return LocalTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	}
 }

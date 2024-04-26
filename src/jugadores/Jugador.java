@@ -7,7 +7,7 @@ public abstract class Jugador {
 	private int puntosPartida;
 
 	protected Jugador(String nombre) {
-		this.nombre = nombre;
+		this.nombre = nombre.toUpperCase();
 		this.puntosPartida = 0;
 	}
 
