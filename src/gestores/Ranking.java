@@ -42,9 +42,10 @@ public class Ranking {
 		return this.ranking;
 	}
 	
+	//No se pueden crear jugadores llamados CPU o CPU[número]
 	public boolean crearJugador(String jugador) {
 		jugador = jugador.toUpperCase();
-		if (!this.existsJugador(jugador)) {
+		if (!this.existsJugador(jugador) && !jugador.matches("CPU\\d*")) {
 			this.nombreJugadores.add(jugador);
 			this.partidasGanadasJugadores.add(0);
 			this.actualizarRanking();
@@ -69,7 +70,7 @@ public class Ranking {
 		}
 	}
 	
-	public int findIndiceJugador(String nombre) {
+	private int findIndiceJugador(String nombre) {
 		nombre = nombre.toUpperCase();
 		return this.nombreJugadores.indexOf(nombre);
 	}
@@ -80,16 +81,13 @@ public class Ranking {
 	}
 	
 	public void partidaGanada(String nombre) {
-		/*De normal en el loop de juego general se controla crear y seleccionar los jugadores del ranking primero
-		 * pero pongo el if por si acaso para que no falle el programa en caso de llamar a este método con un jugador que no existe
-		*/
-		if (!this.existsJugador(nombre)) {
-			this.crearJugador(nombre);
+		//Evita a las cpus en caso de que ganen la partida
+		if (this.existsJugador(nombre)) {
+			int index = this.findIndiceJugador(nombre);
+			int partidasGanadas = this.partidasGanadasJugadores.get(index);
+			this.partidasGanadasJugadores.set(index, partidasGanadas+1);
+			this.actualizarRanking();
 		}
-		int index = this.findIndiceJugador(nombre);
-		int partidasGanadas = this.partidasGanadasJugadores.get(index);
-		this.partidasGanadasJugadores.set(index, partidasGanadas+1);
-		this.actualizarRanking();
 	}
 	
 	private void ordenarRanking() {

@@ -1,6 +1,6 @@
 package interfaces;
 
-import jugadores.Jugador;
+import preguntas.Pregunta;
 
 public interface Menu {
 	public abstract void mostrarPrincipal();
@@ -16,14 +16,15 @@ public interface Menu {
 	public abstract void mostrarRanking();
 	
 	public abstract void mostrarElegirCantidadJugadores();
+	public abstract int[] elegirCantidadJugadores();
 	
 	public abstract void mostrarElegirJugador();
-	public abstract Jugador elegirJugador(String nombre);
+	public abstract String elegirJugador();
 	
 	public abstract void mostrarElegirRondas();
 	public abstract int elegirRondas();
 	
-	public abstract void mostrarPregunta();
+	public abstract void mostrarPregunta(Pregunta pregunta);
 	public abstract void preguntaTerminada(); //TODO posibles mensaje dependiendo si aciertas o no
 	
 	public abstract void mostrarFinPartida();

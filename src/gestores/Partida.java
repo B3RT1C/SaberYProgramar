@@ -50,7 +50,7 @@ public class Partida {
 	private boolean addJugador(Jugador jugador) {
 		this.jugadores.add(jugador);
 
-		if (this.jugadores.size() == numJugadores) {
+		if (this.jugadores.size() > numJugadores) {
 			this.jugadores.remove(0);
 		}
 		
@@ -116,7 +116,7 @@ public class Partida {
 		return this.preguntas.size() == 0;
 	}
 	
-	public String getPuntuacion() {
+	public String getPuntuaciones() {
 		String puntuacion = "";
 		
 		for (Jugador i : this.jugadores) {
@@ -126,6 +126,7 @@ public class Partida {
 	}
 	
 	//Devuelve un array para controlar el caso de un empate
+	//Para que se considere hanar has de conseguir almenos 1 punto, para que si juegas tu solo y no consigues nigún punto no cuente como victorio
 	public ArrayList<String> getGanador() {
 		int highestPuntos = 0;
 		
@@ -136,7 +137,7 @@ public class Partida {
 		}
 		
 		for (Jugador i : this.jugadores) {
-			if (i.getPuntosPartida() == highestPuntos) {
+			if (i.getPuntosPartida() == highestPuntos && highestPuntos > 0) {
 				Partida.ganadores.add(i.getNombre());
 			}
 		}
@@ -145,7 +146,7 @@ public class Partida {
 	}
 	
 	public boolean isEmpate() {
-		return (Partida.ganadores.size() != 1);
+		return (Partida.ganadores.size() > 1 && this.numJugadores > 1);
 	}
 	
 }

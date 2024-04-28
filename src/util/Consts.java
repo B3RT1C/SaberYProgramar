@@ -28,7 +28,7 @@ public class Consts {
 	public static final String ERROR_LEER_ARCHIVO = "ERROR: no se pudo leer el archivo";
 	public static final String ERROR_CREAR_ARCHIVO = "ERROR: no se pudo crear el archivo";
 	public static final String ERROR_MOVER_ARCHIVO = "ERROR: no se pudo mover el archivo";
-	public static final String ERROR_OPCION_NO_VALIDA = "ERROR: opción no válida";
+	public static final String ERROR_OPCION_NO_VALIDA = "ERROR: opción no válida, introduce otro valor";
 	
 	public static final double RATIO_ESCONDER_LETRAS = 1d/3d;
 

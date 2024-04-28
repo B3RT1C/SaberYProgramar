@@ -5,7 +5,10 @@ import java.util.Scanner;
 
 import gestores.Gestor;
 import interfaces.Menu;
+import jugadores.Cpu;
 import jugadores.Jugador;
+import preguntas.Ingles;
+import preguntas.Pregunta;
 import util.Consts;
 
 public class JuegoConsola implements Menu {
@@ -29,13 +32,7 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public String elegirPrincipal() {
-		String opcion = in.nextLine().toUpperCase();
-		while (!opcion.matches("[ABCDE]")) {
-			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
-			opcion = in.nextLine().toUpperCase();
-		}
-		
-		return opcion;
+		return this.elegirOpcion("[ABCDE]");
 	}
 	
 	private void loopPrincipal() {
@@ -45,7 +42,56 @@ public class JuegoConsola implements Menu {
 			opcion = this.elegirPrincipal();
 			switch (opcion) {
 				case "A": {
-					System.out.println("aaaaa");
+					
+					this.mostrarElegirRondas();
+					int numRondas = this.elegirRondas();
+					
+					this.mostrarElegirCantidadJugadores();
+					int[] infoNumJugadores = this.elegirCantidadJugadores();
+					int numJugadores = infoNumJugadores[0];
+					int numHumanos = infoNumJugadores[1];
+					int numCpu = infoNumJugadores[0]-infoNumJugadores[1];
+					
+					Gestor.partida.configurar(numJugadores, numRondas);
+					
+					while (numHumanos > 0) {
+						this.mostrarElegirJugador();
+						String jugador = this.elegirJugador();
+						
+						if (jugador != null) {
+							Gestor.partida.addPersona(jugador);
+							numHumanos--;
+						}
+					}
+					
+					for (int i = 0; i < numCpu; i++) {
+						Gestor.partida.addCPU();
+					}
+					
+					while (!Gestor.partida.isTerminada()) {
+						Jugador jugador = Gestor.partida.nextJugador();
+						Pregunta pregunta = Gestor.partida.nextPregunta();
+						
+						System.out.println("\nTurno de " + jugador.getNombre());
+						this.mostrarPregunta(pregunta);
+						
+						if (jugador.responder(jugador instanceof Cpu? null : in.nextLine(), pregunta)) {
+							System.out.println("¡Pregunta acertada! +1 punto\n");
+						
+						} else {
+							System.out.println("Pregunta fallada\n"
+											 + "Respuesta correcta:" + pregunta.getSolucion() + "\n");
+						}
+					}
+					
+					this.mostrarFinPartida();
+					Gestor.historial.escribirs(Gestor.partida.getPuntuaciones());
+					
+					for (String i : Gestor.partida.getGanador()) {
+						Gestor.jugadores.partidaGanada(i);
+					}
+					
+					Gestor.jugadores.actualizarRanking();
 					break;
 				
 				} case "B": {
@@ -70,12 +116,6 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public void mostrarGestorJugadores() {
-		/*
-		 * a) Ver Jugadores: muestra la lista de jugadores registrados.
-		 * b) Añadir jugador: permite añadir al sistema a un nuevo jugador.
-		 * c) Eliminar jugador: permite eliminar del sistema a un jugador registrado.
-		 * d) Volver: vuelve al menú principal.
-		 */
 		System.out.println("\n"
 				 + "a) Ver Jugadores -> Muestra la lista de jugadores registrados\n"
 				 + "b) Añadir jugador -> Permite añadir al sistema un nuevo jugador\n"
@@ -86,13 +126,7 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public String elegirGestorJugadores() {
-		String opcion = in.nextLine().toUpperCase();
-		while (!opcion.matches("[ABCD]")) {
-			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
-			opcion = in.nextLine().toUpperCase();
-		}
-		
-		return opcion;
+		return this.elegirOpcion("[ABCD]");
 	}
 	
 	private void loopGestorjugadores() {
@@ -172,38 +206,97 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public void mostrarElegirCantidadJugadores() {
-		// TODO Auto-generated method stub
+		System.out.println("Dime cuantos jugadores quieres que existan en la partida (1-4)");
+	}
+	
+	@Override
+	public int[] elegirCantidadJugadores() {
+		int numJugadores = Integer.valueOf(this.elegirOpcion("[1234]"));
 		
+		System.out.println("De esos " + numJugadores + " jugadores cuantos quieres que sean humanos, el resto serán CPUs");
+		int numHumanos = Integer.valueOf(in.nextLine());
+		while (numHumanos < 0 || numHumanos > numJugadores) {
+			System.out.println(Consts.ERROR_OPCION_NO_VALIDA);
+			numHumanos = Integer.valueOf(in.nextLine());
+		}
+		
+		System.out.println("Jugarán " + numHumanos + " humano/s y " + (numJugadores-numHumanos) + " CPU/s");
+		
+		return new int[]{numJugadores, numHumanos};
 	}
 
 	@Override
 	public void mostrarElegirJugador() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Dime el nombre de un jugador para añadirlo a la partida");
 	}
 
 	@Override
-	public Jugador elegirJugador(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
+	public String elegirJugador() {
+		String nombre = in.nextLine().toUpperCase();
+		while (nombre.matches("CPU\\d*")) {
+			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
+			nombre = in.nextLine().toUpperCase();
+		}
+		
+		if (!Gestor.jugadores.existsJugador(nombre)) {
+			System.out.println("El jugador: " + nombre.toUpperCase() + " no existe en el sistema, ¿quieres añadirlo? Y/N");
+			String opcion = this.elegirOpcion("[YN]");
+			
+			if (opcion.equals("Y")) {
+				Gestor.jugadores.crearJugador(nombre);
+			
+			} else if (opcion.equals("N")) {
+				return null;
+			}
+		}
+		
+		return nombre;
 	}
 
 	@Override
 	public void mostrarElegirRondas() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("\n"
+						 + "Cuantas rondas quieres jugar\n"
+						 + "a) Partida rápida: 3 rondas\n"
+						 + "b) Partida corta: 5 rondas\n"
+						 + "c) Partida normal: 10 rondas\n"
+						 + "d) PArtida larga: 20 rondas\n"
+						 + "\n");
 	}
 
 	@Override
 	public int elegirRondas() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		String opcion = this.elegirOpcion("[ABCD]");
 
-	@Override
-	public void mostrarPregunta() {
-		// TODO Auto-generated method stub
+		switch (opcion) {
+		case "A": {
+			return 3;
+
+		} case "B": {
+			return 5;
 		
+		} case "C": {
+			return 10;
+		
+		} case "D": {
+			return 20;
+		
+		} default: {
+			return 3;
+		}
+	}
+	}
+	
+	@Override
+	public void mostrarPregunta(Pregunta pregunta) {
+		System.out.println(pregunta.getEnunciado());
+		if (pregunta instanceof Ingles) {
+			char letra = 'a';
+			for (String i : ((Ingles) pregunta).getOpciones()) {
+				System.out.println(letra + ") " + i);
+				letra++;
+			}
+		}
 	}
 
 	@Override
@@ -214,14 +307,26 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public void mostrarFinPartida() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Partida finalizada");
+		if (Gestor.partida.isEmpate()) {
+			System.out.println("¡Es un empate!");
+		}
+		System.out.println(Gestor.partida.getPuntuaciones());
 	}
 	
 	private void mostrarContenidoArchivo(ArrayList<String> contenido) {
 		for (String i : contenido) {
 			System.out.println(i);
 		}
+	}
+	
+	private String elegirOpcion(String patron) {
+		String opcion = in.nextLine().toUpperCase();
+		while (!opcion.matches(patron)) {
+			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
+			opcion = in.nextLine().toUpperCase();
+		}
+		return opcion;
 	}
 
 }
