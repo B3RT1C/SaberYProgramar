@@ -12,6 +12,7 @@ public class JuegoConsola implements Menu {
 	private Scanner in = new Scanner(System.in);
 	
 	public JuegoConsola() {
+		System.out.println(Consts.MENU_TITLE);
 		this.loopPrincipal();
 	}
 	

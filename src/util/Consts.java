@@ -64,6 +64,7 @@ public class Consts {
 	}
 	public static final String LOG_ERROR = "ERROR. Se ha producido un error en la aplicación: ";
 	
+	public static final String MENU_TITLE = "SABER Y PROGRAMAR";
 	public static final String MENU_SALIR = "Saliendo...";
 	public static final String MENU_VOLVER = "Volviendo...";
 	public static final String MENU_FORMATEO_NOMBRES = "Las mayúscula y minúsculas serán ignoradas en los nombres de los jugadores";
