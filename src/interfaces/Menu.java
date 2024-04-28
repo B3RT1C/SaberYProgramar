@@ -11,6 +11,8 @@ public interface Menu {
 
 	public abstract void mostrarHistorico();
 	
+	public abstract void volver();
+	
 	public abstract void mostrarRanking();
 	
 	public abstract void mostrarElegirCantidadJugadores();
@@ -24,5 +26,5 @@ public interface Menu {
 	public abstract void mostrarPregunta();
 	public abstract void preguntaTerminada(); //TODO posibles mensaje dependiendo si aciertas o no
 	
-	public abstract void mostarFinPartida();
+	public abstract void mostrarFinPartida();
 }

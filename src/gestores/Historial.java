@@ -22,26 +22,26 @@ public class Historial {
 				Files.createFile(path);
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.err.println(Consts.MENSAJE_ERROR_CREAR_ARCHIVO);
+				System.err.println(Consts.ERROR_CREAR_ARCHIVO);
 			}
 		}
 	}
 	
-	public void leerArchivo() {
+	private void leerArchivo() {
 		try {
 			this.historial = (ArrayList<String>)Files.readAllLines(Consts.PATH_HISTORIAL);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println(Consts.MENSAJE_ERROR_LEER_ARCHIVO);
+			System.err.println(Consts.ERROR_LEER_ARCHIVO);
 		}
 	}
 
-	public void escribirArchivo() {
+	public void escribirs(String linea) {
 		try {
-			Files.writeString(Consts.PATH_HISTORIAL, Gestor.partida.getPuntuacion(), StandardOpenOption.APPEND);
+			Files.writeString(Consts.PATH_HISTORIAL, linea+"\n", StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(Consts.MENSAJE_ERROR_ESCRIBIR_ARCHIVO);
+			System.out.println(Consts.ERROR_ESCRIBIR_ARCHIVO);
 		}
 	}
 

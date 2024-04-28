@@ -22,13 +22,17 @@ public abstract class Pregunta {
 				pregunta = new Letras();
 			
 			} else if (randomTipoPregunta.equals(Ingles.class.getSimpleName())) {
-				pregunta = new Ingles();				
+				pregunta = new Ingles();
 			}
 		} catch (IOException e) {
-			System.out.println(Consts.MENSAJE_ERROR_CREAR_PREGUNTA);
+			System.out.println(Consts.ERROR_CREAR_PREGUNTA);
 		}
 
 		return pregunta;
+	}
+	
+	public static void startup() {
+		
 	}
 
 	public String getEnunciado() {

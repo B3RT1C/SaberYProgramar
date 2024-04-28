@@ -8,9 +8,10 @@ public class Persona extends Jugador{
 	}
 
 	@Override
-	public boolean responder(Pregunta pregunta) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean responder(String respuesta, Pregunta pregunta) {
+		boolean isAcierto = pregunta.verificarRespuesta(respuesta);
+		super.preguntaAcertada(isAcierto);
+		return isAcierto;
 	}
 
 }

@@ -25,7 +25,7 @@ public class Ranking {
 				Files.createFile(path);
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.err.println(Consts.MENSAJE_ERROR_CREAR_ARCHIVO);
+				System.err.println(Consts.ERROR_CREAR_ARCHIVO);
 			}
 		}
 	}
@@ -80,6 +80,12 @@ public class Ranking {
 	}
 	
 	public void partidaGanada(String nombre) {
+		/*De normal en el loop de juego general se controla crear y seleccionar los jugadores del ranking primero
+		 * pero pongo el if por si acaso para que no falle el programa en caso de llamar a este método con un jugador que no existe
+		*/
+		if (!this.existsJugador(nombre)) {
+			this.crearJugador(nombre);
+		}
 		int index = this.findIndiceJugador(nombre);
 		int partidasGanadas = this.partidasGanadasJugadores.get(index);
 		this.partidasGanadasJugadores.set(index, partidasGanadas+1);
@@ -140,17 +146,18 @@ public class Ranking {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println(Consts.MENSAJE_ERROR_ESCRIBIR_ARCHIVO);
+			System.err.println(Consts.ERROR_ESCRIBIR_ARCHIVO);
 		}
 	}
 	
+	//No se añadirá a los arraylists ninguna línea que no siga el formato [String][espacio][int]... 
 	private void leerArchivo() {
 		ArrayList<String> aux = new ArrayList<>();
 		try {
 			aux = (ArrayList<String>)Files.readAllLines(Consts.PATH_RANKING);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println(Consts.MENSAJE_ERROR_LEER_ARCHIVO);
+			System.err.println(Consts.ERROR_LEER_ARCHIVO);
 		}
 		
 		for (String i : aux) {
@@ -162,9 +169,12 @@ public class Ranking {
 			 * este caso no se puede dar a menos que el usuario cambie manualmente el ranking
 			*/
 			try {
-				this.partidasGanadasJugadores.add(Integer.valueOf(datosJugador[1]));
-				this.nombreJugadores.add(datosJugador[0]);				
-				this.ranking.add(i);
+				//Este if evita que se almacenen jugadores repetidos en el caso de que el archivo por la razón que sea tenga nombres repetidos
+				if (!this.existsJugador(datosJugador[0])) {
+					this.partidasGanadasJugadores.add(Integer.valueOf(datosJugador[1]));
+					this.nombreJugadores.add(datosJugador[0].toUpperCase());				
+					this.ranking.add(i);
+				}
 			} catch (Exception e) {
 			}
 		}

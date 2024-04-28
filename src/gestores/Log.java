@@ -26,7 +26,7 @@ public class Log {
 				Files.createFile(Consts.PATH_LOG);
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.err.println(Consts.MENSAJE_ERROR_CREAR_ARCHIVO);
+				System.err.println(Consts.ERROR_CREAR_ARCHIVO);
 			}
 		}
 	}
@@ -37,7 +37,7 @@ public class Log {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println(Consts.MENSAJE_ERROR_LEER_ARCHIVO);
+			System.err.println(Consts.ERROR_LEER_ARCHIVO);
 			this.fechaLog = null;
 		}
 	}
@@ -63,12 +63,12 @@ public class Log {
 				this.verificarExistenciaArchivo();
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println(Consts.MENSAJE_ERROR_MOVER_ARCHIVO);
+				System.out.println(Consts.ERROR_MOVER_ARCHIVO);
 			}
 		}
 	}
 
-	public void escribirRegistro(String linea) {
+	public void escribirArchivo(String linea) {
 		this.setFechaLog();
 		this.veificarLogHoy();
 		
@@ -78,7 +78,7 @@ public class Log {
 			this.log.add(linea);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(Consts.MENSAJE_ERROR_ESCRIBIR_ARCHIVO);
+			System.out.println(Consts.ERROR_ESCRIBIR_ARCHIVO);
 		}
 	}
 	

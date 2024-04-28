@@ -11,7 +11,7 @@ public abstract class Jugador {
 		this.puntosPartida = 0;
 	}
 
-	public abstract boolean responder(Pregunta pregunta);
+	public abstract boolean responder(String respuesta, Pregunta pregunta);
 
 	public String getNombre() {
 		return this.nombre;

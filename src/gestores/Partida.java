@@ -3,14 +3,20 @@ package gestores;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import jugadores.Cpu;
 import jugadores.Jugador;
+import jugadores.Persona;
 import preguntas.Pregunta;
 
 public class Partida {
+	private static ArrayList<String> ganadores = new ArrayList<>();
+
+	
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
 	private ArrayList<Pregunta> preguntas = new ArrayList<>();
 	
 	private int numJugadores;
+	private boolean jugadoresMezclados = false;
 	
 	protected Partida() {}
 	
@@ -24,6 +30,7 @@ public class Partida {
 	private void reiniciarPartida() {
 		this.jugadores.clear();
 		this.preguntas.clear();
+		Partida.ganadores.clear();
 	}
 	
 	private void generarPreguntas(int numPreguntas) {
@@ -32,24 +39,50 @@ public class Partida {
 		}
 	}
 	
+	public int getNumJugadores() {
+		return this.numJugadores;
+	}
+	
 	public ArrayList<Jugador> getJugadores() {
 		return this.jugadores;
 	}
 	
-	public boolean addJugador(Jugador jugador) {
-		if (!jugadores.contains(jugador)) {
-			this.jugadores.add(jugador);
+	private boolean addJugador(Jugador jugador) {
+		this.jugadores.add(jugador);
 
-			if (this.jugadores.size() == numJugadores) {
-				this.jugadores.remove(0);
-			}
-			Collections.shuffle(this.jugadores);				
-			
-			return true;
-			
+		if (this.jugadores.size() == numJugadores) {
+			this.jugadores.remove(0);
+		}
+		
+		return true;
+	}
+	
+	public boolean addPersona(String newJugador) {
+		if (!this.jugadorEnPartida(newJugador)) {
+			return this.addJugador(new Persona(newJugador));
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean addCPU() {
+		String nombreCPU = "CPU";
+		int numCPU = 1;
+		
+		while (this.jugadorEnPartida(nombreCPU+numCPU)) {
+			numCPU++;
+		}
+		
+		return this.addJugador(new Cpu(nombreCPU+numCPU));
+	}
+	
+	private boolean jugadorEnPartida(String nombreNewJugador) {
+		for (Jugador i : this.jugadores) {
+			if (i.getNombre().equals(nombreNewJugador)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public <T> T nextEnCola(ArrayList<T> cola, boolean rotate) {
@@ -72,10 +105,14 @@ public class Partida {
 	}
 	
 	public Jugador nextJugador() {
+		if (!this.jugadoresMezclados) {
+			Collections.shuffle(this.jugadores);
+			this.jugadoresMezclados = true;
+		}
 		return this.nextEnCola(this.jugadores, true);
 	}
 	
-	public boolean isFinished() {
+	public boolean isTerminada() {
 		return this.preguntas.size() == 0;
 	}
 	
@@ -88,10 +125,27 @@ public class Partida {
 		return puntuacion;
 	}
 	
-	public void terminarPartida() {
-		if (this.isFinished()) {
-			Gestor.historial.escribirArchivo();
+	//Devuelve un array para controlar el caso de un empate
+	public ArrayList<String> getGanador() {
+		int highestPuntos = 0;
+		
+		for (Jugador i : this.jugadores) {
+			if (i.getPuntosPartida() > highestPuntos) {
+				highestPuntos = i.getPuntosPartida();
+			}
 		}
+		
+		for (Jugador i : this.jugadores) {
+			if (i.getPuntosPartida() == highestPuntos) {
+				Partida.ganadores.add(i.getNombre());
+			}
+		}
+		
+		return Partida.ganadores;
+	}
+	
+	public boolean isEmpate() {
+		return (Partida.ganadores.size() != 1);
 	}
 	
 }

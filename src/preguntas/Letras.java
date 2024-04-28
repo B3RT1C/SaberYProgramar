@@ -12,7 +12,6 @@ public class Letras extends Pregunta {
 	
 	public Letras() throws IOException {
 		this.leerArchivo();
-		this.filtrarPalabras();
 		super.setSolucion(this.generarSolucion());
 		super.setEnunciado(this.generarEnunciado());
 	}
@@ -32,12 +31,16 @@ public class Letras extends Pregunta {
 	
 	@Override
 	protected String generarSolucion() {
-		return palabras.get(Consts.RAND.nextInt(0, palabras.size()));
+		String palabraAleatoria;
+		do {
+			palabraAleatoria = Letras.palabras.get(Consts.RAND.nextInt(0, Letras.palabras.size()));
+		} while (palabraAleatoria.length() < Consts.MIN_LENGTH_PALABRA_PERMITIDO);
+		return palabraAleatoria;
 	}
 	
 	public void leerArchivo() throws IOException {
-		if (palabras.isEmpty()) {
-			palabras = (ArrayList<String>)Files.readAllLines(Consts.PATH_DICCIONARIO);
+		if (Letras.palabras.isEmpty()) {
+			Letras.palabras = (ArrayList<String>)Files.readAllLines(Consts.PATH_DICCIONARIO);
 		}
 	}
 	
@@ -54,16 +57,24 @@ public class Letras extends Pregunta {
 		}
 		Collections.shuffle(indicesLetrasPalabra);
 		
-		
-		return (ArrayList<Integer>)(indicesLetrasPalabra.subList(0, numLetrasOcultar));
+		return new ArrayList<>(indicesLetrasPalabra.subList(0, numLetrasOcultar));
 	}
 	
+	/**
+	 * @deprecated Demasiado lento
+	 */
+	@SuppressWarnings("unused")
 	private void filtrarPalabras() {
-		for (String i : palabras) {
+		ArrayList<String> palabrasNoValidas = new ArrayList<>();
+		for (String i : Letras.palabras) {
 			if (i.length() <= 3) {
-				palabras.remove(i);
+				palabrasNoValidas.add(i);
 			}
 		}
+		for (String i : palabrasNoValidas) {
+			Letras.palabras.remove(i);
+		}
 	}
+	
 	
 }

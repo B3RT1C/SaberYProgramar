@@ -14,20 +14,24 @@ public class Cpu extends Jugador {
 	}
 
 	@Override
-	public boolean responder(Pregunta pregunta) {
+	public boolean responder(String respuesta, Pregunta pregunta) {
 		if (pregunta instanceof Mates) {
+			super.preguntaAcertada(true);
 			return true;
 			
 		} else if (pregunta instanceof Letras) {
 			return false;
 		
 		} else if (pregunta instanceof Ingles) {
-			Ingles preguntaIng = (Ingles)pregunta;
-			ArrayList<String> opcion = preguntaIng.getOpciones();
+			ArrayList<String> opcion = ((Ingles)pregunta).getOpciones();
 			String randomOpcion = opcion.get(Consts.RAND.nextInt(0, opcion.size()));
-			return pregunta.verificarRespuesta(randomOpcion);
-		}
+			boolean isAcierto = pregunta.verificarRespuesta(randomOpcion);
+			super.preguntaAcertada(isAcierto);
+			return isAcierto;
 		
-		return false;
+		} else {
+			return false;
+		}
 	}
+	
 }
