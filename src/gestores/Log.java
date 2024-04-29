@@ -56,7 +56,7 @@ public class Log {
 	}
 	
 	private void veificarLogHoy() {
-		if (!this.getFecha().equals(this.fechaLog) || this.fechaLog == null) {
+		if (!this.getFecha().equals(this.fechaLog) && this.fechaLog != null) {
 			String[] fecha = this.fechaLog.split("/");
 			try {
 				Files.move(Consts.PATH_LOG, Consts.PATH_MOVER_LOG(fecha[2]+fecha[1]+fecha[0]));
@@ -72,7 +72,7 @@ public class Log {
 		this.setFechaLog();
 		this.veificarLogHoy();
 		
-		linea = "["+ this.getFecha() +"]" + "["+this.getHora()+"]: " + linea;
+		linea = "["+ this.getFecha() +"]" + "["+this.getHora()+"]: " + linea + "\n";
 		try {
 			Files.writeString(Consts.PATH_LOG, linea, StandardOpenOption.APPEND);
 			this.log.add(linea);
@@ -87,6 +87,6 @@ public class Log {
 	}
 	
 	private String getHora() {
-		return LocalTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		return LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 }

@@ -13,7 +13,7 @@ public class Historial {
 	
 	protected Historial() {
 		this.verificarExistenciaArchivo(Consts.PATH_HISTORIAL);
-
+		this.leerArchivo();
 	}
 	
 	private void verificarExistenciaArchivo(Path path) {
@@ -39,6 +39,7 @@ public class Historial {
 	public void escribir(String linea) {
 		try {
 			Files.writeString(Consts.PATH_HISTORIAL, linea+"\n", StandardOpenOption.APPEND);
+			this.historial.add(linea);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(Consts.ERROR_ESCRIBIR_ARCHIVO);
@@ -46,7 +47,6 @@ public class Historial {
 	}
 
 	public ArrayList<String> getHistorial() {
-		this.leerArchivo();
 		return this.historial;
 	}
 	

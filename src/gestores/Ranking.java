@@ -46,6 +46,7 @@ public class Ranking {
 	public boolean crearJugador(String jugador) {
 		jugador = jugador.toUpperCase();
 		if (!this.existsJugador(jugador) && !jugador.matches("CPU\\d*")) {
+			this.ranking.add(jugador + " 0");
 			this.nombreJugadores.add(jugador);
 			this.partidasGanadasJugadores.add(0);
 			this.actualizarRanking();

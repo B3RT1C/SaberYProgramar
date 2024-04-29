@@ -113,11 +113,14 @@ public class JuegoConsola implements Menu {
 		System.out.println("\n"+Consts.MENU_ADD_JUGADOR);
 		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
 	
-		if (Gestor.jugadores.crearJugador(in.nextLine())) {
+		String nombre = in.nextLine().toUpperCase();
+		if (Gestor.jugadores.crearJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
-		
+			Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ANYADIDO + nombre);
+			
 		} else {
 			System.out.println(Consts.MENU_ADD_JUGADOR_ERROR);
+			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_ADD_JUGADOR_ERROR);
 		}
 		System.out.println(Consts.MENU_VOLVER+"\n");
 	}
@@ -126,11 +129,14 @@ public class JuegoConsola implements Menu {
 		System.out.println("\n"+Consts.MENU_REMOVE_JUGADOR);
 		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
 		
-		if (Gestor.jugadores.removeJugador(in.nextLine())) {
+		String nombre = in.nextLine().toUpperCase();
+		if (Gestor.jugadores.removeJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
+			Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ELIMINADO + nombre);
 		
 		} else {
 			System.out.println(Consts.MENU_REMOVE_JUGADOR_ERROR);
+			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_REMOVE_JUGADOR_ERROR);
 		}
 		System.out.println(Consts.MENU_VOLVER+"\n");
 	}
@@ -168,11 +174,7 @@ public class JuegoConsola implements Menu {
 		int numJugadores = Integer.valueOf(this.elegirOpcion("[1234]", true));
 		
 		System.out.println("De esos " + numJugadores + " jugadores cuantos quieres que sean humanos, el resto serán CPUs");
-		int numHumanos = Integer.valueOf(in.nextLine());
-		while (numHumanos < 0 || numHumanos > numJugadores) {
-			System.out.println(Consts.ERROR_OPCION_NO_VALIDA);
-			numHumanos = Integer.valueOf(in.nextLine());
-		}
+		int numHumanos = Integer.valueOf(this.elegirOpcion("[0-"+numJugadores+"]", true));
 		
 		System.out.println("Jugarán " + numHumanos + " humano/s y " + (numJugadores-numHumanos) + " CPU/s");
 		
@@ -194,6 +196,7 @@ public class JuegoConsola implements Menu {
 			
 			if (opcion.equals("Y")) {
 				Gestor.jugadores.crearJugador(nombre);
+				Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ANYADIDO + nombre);
 			
 			} else if (opcion.equals("N")) {
 				return null;
@@ -275,6 +278,7 @@ public class JuegoConsola implements Menu {
 		String opcion = in.nextLine().toUpperCase();
 		while (toMatch? !opcion.matches(patron) : opcion.matches(patron)) {
 			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
+			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_OPCION_NO_VALIDA);
 			opcion = in.nextLine().toUpperCase();
 		}
 		return opcion;
@@ -305,22 +309,51 @@ public class JuegoConsola implements Menu {
 		for (int i = 0; i < numCpu; i++) {
 			Gestor.partida.addCPU();
 		}
+		
+		Gestor.log.escribirArchivo(Consts.LOG_INICIO_PARTIDA(numHumanos, numCpu));
 	}
 	
 	private void loopJuego() {
+		int ronda = 1;
+		int turno = 0;
 		while (!Gestor.partida.isTerminada()) {
 			Jugador jugador = Gestor.partida.nextJugador();
 			Pregunta pregunta = Gestor.partida.nextPregunta();
 			
+			if (turno == 0) {
+				System.out.println("\nRonda " + ronda);
+				ronda++;
+			}
+			turno = (turno+1)%Gestor.partida.getNumJugadores();
+			
 			System.out.println("\nTurno de " + jugador.getNombre());
 			this.mostrarPregunta(pregunta);
+
+			if (jugador instanceof Cpu) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+			}
 			
-			if (jugador.responder(jugador instanceof Cpu? null : in.nextLine(), pregunta)) {
+			String respuestaCPU = "";
+			if (jugador instanceof Cpu) {
+				respuestaCPU = ((Cpu)jugador).generarRespuesta(pregunta);
+				System.out.println(respuestaCPU);
+			}
+			if (jugador.responder(jugador instanceof Cpu? respuestaCPU : in.nextLine(), pregunta)) {
 				System.out.println("¡Pregunta acertada! +1 punto\n");
 			
 			} else {
 				System.out.println("Pregunta fallada\n"
 								 + "Respuesta correcta:" + pregunta.getSolucion() + "\n");
+			}
+			
+			if (jugador instanceof Cpu) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
 			}
 		}
 	}
@@ -333,5 +366,6 @@ public class JuegoConsola implements Menu {
 		}
 		
 		Gestor.jugadores.actualizarRanking();
+		Gestor.log.escribirArchivo(Consts.LOG_FIN_PARTIDA(Gestor.partida.getNumJugadores(), Gestor.partida.getGanador()));
 	}
 }

@@ -2,6 +2,7 @@ package preguntas;
 
 import java.io.IOException;
 
+import gestores.Gestor;
 import util.Consts;
 
 public abstract class Pregunta {
@@ -26,6 +27,7 @@ public abstract class Pregunta {
 			}
 		} catch (IOException e) {
 			System.out.println(Consts.ERROR_CREAR_PREGUNTA);
+			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_CREAR_PREGUNTA);
 		}
 
 		return pregunta;

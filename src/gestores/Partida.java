@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import jugadores.Cpu;
 import jugadores.Jugador;
-import jugadores.Persona;
 import preguntas.Pregunta;
 
 public class Partida {
@@ -43,9 +42,9 @@ public class Partida {
 		return this.numJugadores;
 	}
 	
-	public ArrayList<Jugador> getJugadores() {
-		return this.jugadores;
-	}
+//	public ArrayList<Jugador> getJugadores() {
+//		return this.jugadores;
+//	}
 	
 	private boolean addJugador(Jugador jugador) {
 		this.jugadores.add(jugador);
@@ -59,7 +58,7 @@ public class Partida {
 	
 	public boolean addPersona(String newJugador) {
 		if (!this.jugadorEnPartida(newJugador)) {
-			return this.addJugador(new Persona(newJugador));
+			return this.addJugador(new Jugador(newJugador));
 		} else {
 			return false;
 		}
@@ -85,7 +84,7 @@ public class Partida {
 		return false;
 	}
 	
-	public <T> T nextEnCola(ArrayList<T> cola, boolean rotate) {
+	private <T> T nextEnCola(ArrayList<T> cola, boolean rotate) {
 		try {
 			T primeroEnCola = cola.get(0);
 			cola.remove(0);

@@ -1,36 +1,31 @@
 package jugadores;
 
-import java.util.ArrayList;
-
 import preguntas.Ingles;
 import preguntas.Letras;
 import preguntas.Mates;
 import preguntas.Pregunta;
-import util.Consts;
 
 public class Cpu extends Jugador {
 	public Cpu(String nombre) {
 		super(nombre);
 	}
 
-	@Override
-	public boolean responder(String respuesta, Pregunta pregunta) {
+	public String generarRespuesta(Pregunta pregunta) {
 		if (pregunta instanceof Mates) {
-			super.preguntaAcertada(true);
-			return true;
+			return pregunta.getSolucion();
 			
 		} else if (pregunta instanceof Letras) {
-			return false;
+			char[] respuesta = pregunta.getSolucion().toCharArray();
+			respuesta[0]++;
+			return new String(respuesta);
 		
 		} else if (pregunta instanceof Ingles) {
-			ArrayList<String> opcion = ((Ingles)pregunta).getOpciones();
-			String randomOpcion = opcion.get(Consts.RAND.nextInt(0, opcion.size()));
-			boolean isAcierto = pregunta.verificarRespuesta(randomOpcion);
-			super.preguntaAcertada(isAcierto);
-			return isAcierto;
+			int index = ((Ingles) pregunta).getOpciones().indexOf(pregunta.getSolucion());
+			char respuesta = (char) ('A'+((index+1)%4));
+			return String.valueOf(respuesta);
 		
 		} else {
-			return false;
+			return null;
 		}
 	}
 	
