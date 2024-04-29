@@ -32,7 +32,7 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public String elegirPrincipal() {
-		return this.elegirOpcion("[ABCDE]");
+		return this.elegirOpcion("[ABCDE]", true);
 	}
 	
 	private void loopPrincipal() {
@@ -42,56 +42,10 @@ public class JuegoConsola implements Menu {
 			opcion = this.elegirPrincipal();
 			switch (opcion) {
 				case "A": {
-					
-					this.mostrarElegirRondas();
-					int numRondas = this.elegirRondas();
-					
-					this.mostrarElegirCantidadJugadores();
-					int[] infoNumJugadores = this.elegirCantidadJugadores();
-					int numJugadores = infoNumJugadores[0];
-					int numHumanos = infoNumJugadores[1];
-					int numCpu = infoNumJugadores[0]-infoNumJugadores[1];
-					
-					Gestor.partida.configurar(numJugadores, numRondas);
-					
-					while (numHumanos > 0) {
-						this.mostrarElegirJugador();
-						String jugador = this.elegirJugador();
-						
-						if (jugador != null) {
-							Gestor.partida.addPersona(jugador);
-							numHumanos--;
-						}
-					}
-					
-					for (int i = 0; i < numCpu; i++) {
-						Gestor.partida.addCPU();
-					}
-					
-					while (!Gestor.partida.isTerminada()) {
-						Jugador jugador = Gestor.partida.nextJugador();
-						Pregunta pregunta = Gestor.partida.nextPregunta();
-						
-						System.out.println("\nTurno de " + jugador.getNombre());
-						this.mostrarPregunta(pregunta);
-						
-						if (jugador.responder(jugador instanceof Cpu? null : in.nextLine(), pregunta)) {
-							System.out.println("¡Pregunta acertada! +1 punto\n");
-						
-						} else {
-							System.out.println("Pregunta fallada\n"
-											 + "Respuesta correcta:" + pregunta.getSolucion() + "\n");
-						}
-					}
-					
+					this.partidaStartup();
+					this.loopJuego();
 					this.mostrarFinPartida();
-					Gestor.historial.escribirs(Gestor.partida.getPuntuaciones());
-					
-					for (String i : Gestor.partida.getGanador()) {
-						Gestor.jugadores.partidaGanada(i);
-					}
-					
-					Gestor.jugadores.actualizarRanking();
+					this.partidaCloseup();
 					break;
 				
 				} case "B": {
@@ -126,7 +80,7 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public String elegirGestorJugadores() {
-		return this.elegirOpcion("[ABCD]");
+		return this.elegirOpcion("[ABCD]", true);
 	}
 	
 	private void loopGestorjugadores() {
@@ -211,7 +165,7 @@ public class JuegoConsola implements Menu {
 	
 	@Override
 	public int[] elegirCantidadJugadores() {
-		int numJugadores = Integer.valueOf(this.elegirOpcion("[1234]"));
+		int numJugadores = Integer.valueOf(this.elegirOpcion("[1234]", true));
 		
 		System.out.println("De esos " + numJugadores + " jugadores cuantos quieres que sean humanos, el resto serán CPUs");
 		int numHumanos = Integer.valueOf(in.nextLine());
@@ -232,15 +186,11 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public String elegirJugador() {
-		String nombre = in.nextLine().toUpperCase();
-		while (nombre.matches("CPU\\d*")) {
-			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
-			nombre = in.nextLine().toUpperCase();
-		}
+		String nombre = this.elegirOpcion("CPU\\d*", false);
 		
 		if (!Gestor.jugadores.existsJugador(nombre)) {
 			System.out.println("El jugador: " + nombre.toUpperCase() + " no existe en el sistema, ¿quieres añadirlo? Y/N");
-			String opcion = this.elegirOpcion("[YN]");
+			String opcion = this.elegirOpcion("[YN]", true);
 			
 			if (opcion.equals("Y")) {
 				Gestor.jugadores.crearJugador(nombre);
@@ -266,7 +216,7 @@ public class JuegoConsola implements Menu {
 
 	@Override
 	public int elegirRondas() {
-		String opcion = this.elegirOpcion("[ABCD]");
+		String opcion = this.elegirOpcion("[ABCD]", true);
 
 		switch (opcion) {
 		case "A": {
@@ -320,13 +270,68 @@ public class JuegoConsola implements Menu {
 		}
 	}
 	
-	private String elegirOpcion(String patron) {
+	//toMatch = true para que pida valores nuevos hasta cumplir el patrón y toMatch = false para que pida valores nuevos hasta no cumplir el patrón 
+	private String elegirOpcion(String patron, boolean toMatch) {
 		String opcion = in.nextLine().toUpperCase();
-		while (!opcion.matches(patron)) {
+		while (toMatch? !opcion.matches(patron) : opcion.matches(patron)) {
 			System.err.println(Consts.ERROR_OPCION_NO_VALIDA);
 			opcion = in.nextLine().toUpperCase();
 		}
 		return opcion;
 	}
-
+	
+	private void partidaStartup() {
+		this.mostrarElegirRondas();
+		int numRondas = this.elegirRondas();
+		
+		this.mostrarElegirCantidadJugadores();
+		int[] infoNumJugadores = this.elegirCantidadJugadores();
+		int numJugadores = infoNumJugadores[0];
+		int numHumanos = infoNumJugadores[1];
+		int numCpu = infoNumJugadores[0]-infoNumJugadores[1];
+		
+		Gestor.partida.configurar(numJugadores, numRondas);
+		
+		while (numHumanos > 0) {
+			this.mostrarElegirJugador();
+			String jugador = this.elegirJugador();
+			
+			if (jugador != null) {
+				Gestor.partida.addPersona(jugador);
+				numHumanos--;
+			}
+		}
+		
+		for (int i = 0; i < numCpu; i++) {
+			Gestor.partida.addCPU();
+		}
+	}
+	
+	private void loopJuego() {
+		while (!Gestor.partida.isTerminada()) {
+			Jugador jugador = Gestor.partida.nextJugador();
+			Pregunta pregunta = Gestor.partida.nextPregunta();
+			
+			System.out.println("\nTurno de " + jugador.getNombre());
+			this.mostrarPregunta(pregunta);
+			
+			if (jugador.responder(jugador instanceof Cpu? null : in.nextLine(), pregunta)) {
+				System.out.println("¡Pregunta acertada! +1 punto\n");
+			
+			} else {
+				System.out.println("Pregunta fallada\n"
+								 + "Respuesta correcta:" + pregunta.getSolucion() + "\n");
+			}
+		}
+	}
+	
+	private void partidaCloseup() {
+		Gestor.historial.escribir(Gestor.partida.getPuntuaciones());
+		
+		for (String i : Gestor.partida.getGanador()) {
+			Gestor.jugadores.partidaGanada(i);
+		}
+		
+		Gestor.jugadores.actualizarRanking();
+	}
 }

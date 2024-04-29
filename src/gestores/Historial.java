@@ -36,7 +36,7 @@ public class Historial {
 		}
 	}
 
-	public void escribirs(String linea) {
+	public void escribir(String linea) {
 		try {
 			Files.writeString(Consts.PATH_HISTORIAL, linea+"\n", StandardOpenOption.APPEND);
 		} catch (IOException e) {
