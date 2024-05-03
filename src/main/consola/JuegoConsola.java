@@ -113,10 +113,10 @@ public class JuegoConsola implements Menu {
 		System.out.println("\n"+Consts.MENU_ADD_JUGADOR);
 		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
 	
-		String nombre = in.nextLine().toUpperCase();
+		String nombre = in.nextLine();
 		if (Gestor.jugadores.crearJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
-			Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ANYADIDO + nombre);
+			
 			
 		} else {
 			System.out.println(Consts.MENU_ADD_JUGADOR_ERROR);
@@ -132,7 +132,7 @@ public class JuegoConsola implements Menu {
 		String nombre = in.nextLine().toUpperCase();
 		if (Gestor.jugadores.removeJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
-			Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ELIMINADO + nombre);
+			
 		
 		} else {
 			System.out.println(Consts.MENU_REMOVE_JUGADOR_ERROR);
@@ -151,7 +151,7 @@ public class JuegoConsola implements Menu {
 	
 	@Override
 	public void volver() {
-		System.out.println("\nIntroduce cualquier valor para volver: ");
+		System.out.println("\nPulsa enter o introduce cualquier valor para volver: ");
 		this.in.nextLine();
 		System.out.println(Consts.MENU_VOLVER);
 	}
@@ -196,7 +196,6 @@ public class JuegoConsola implements Menu {
 			
 			if (opcion.equals("Y")) {
 				Gestor.jugadores.crearJugador(nombre);
-				Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ANYADIDO + nombre);
 			
 			} else if (opcion.equals("N")) {
 				return null;
@@ -268,8 +267,13 @@ public class JuegoConsola implements Menu {
 	}
 	
 	private void mostrarContenidoArchivo(ArrayList<String> contenido) {
-		for (String i : contenido) {
-			System.out.println(i);
+		if (contenido.isEmpty()) {
+			System.out.println(Consts.MENU_CERO_CONTENIDO);
+
+		} else {
+			for (String i : contenido) {
+				System.out.println(i);
+			}
 		}
 	}
 	

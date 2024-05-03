@@ -50,6 +50,7 @@ public class Ranking {
 			this.nombreJugadores.add(jugador);
 			this.partidasGanadasJugadores.add(0);
 			this.actualizarRanking();
+			Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ANYADIDO + jugador);
 			return true;
 		
 		} else {
@@ -64,6 +65,7 @@ public class Ranking {
 			this.nombreJugadores.remove(index);
 			this.partidasGanadasJugadores.remove(index);
 			this.actualizarRanking();
+			Gestor.log.escribirArchivo(Consts.LOG_JUGADOR_ELIMINADO + jugador);
 			return true;
 
 		} else {

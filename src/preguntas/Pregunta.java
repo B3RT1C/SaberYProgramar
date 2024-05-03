@@ -33,10 +33,6 @@ public abstract class Pregunta {
 		return pregunta;
 	}
 	
-	public static void startup() {
-		
-	}
-
 	public String getEnunciado() {
 		return this.enunciado;
 	}

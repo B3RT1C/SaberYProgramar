@@ -22,7 +22,7 @@ public class Ingles extends Pregunta {
 	public ArrayList<String> getOpciones() {
 		return opciones;
 	}
-
+	
 	public void leerArchivo() throws IOException {
 		if (preguntasRespuestas.isEmpty()) {
 			preguntasRespuestas = (ArrayList<String>)Files.readAllLines(Consts.PATH_INGLES);

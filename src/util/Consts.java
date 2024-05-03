@@ -74,5 +74,5 @@ public class Consts {
 	public static final String MENU_REMOVE_JUGADOR_ERROR = "El jugador que has introducido no existe en el sistema";
 	public static final String MENU_SUCCEED = "Acción realizada con éxito";
 	
-	
+	public static final String MENU_CERO_CONTENIDO = "No existe información para esta opción";
 }
