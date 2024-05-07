@@ -105,12 +105,6 @@ public class JuegoGUI extends JFrame implements Menu{
 	}
 
 	@Override
-	public void preguntaTerminada() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void mostrarFinPartida() {
 		// TODO Auto-generated method stub
 		

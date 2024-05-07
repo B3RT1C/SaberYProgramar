@@ -25,7 +25,6 @@ public interface Menu {
 	public abstract int elegirRondas();
 	
 	public abstract void mostrarPregunta(Pregunta pregunta);
-	public abstract void preguntaTerminada(); //TODO posibles mensaje dependiendo si aciertas o no
 	
 	public abstract void mostrarFinPartida();
 }

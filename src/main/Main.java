@@ -5,7 +5,7 @@ import main.consola.JuegoConsola;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-		boolean consola = false;
+		boolean consola = true;
 		
 		if (consola) {
 			new JuegoConsola();

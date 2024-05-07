@@ -252,12 +252,6 @@ public class JuegoConsola implements Menu {
 	}
 
 	@Override
-	public void preguntaTerminada() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void mostrarFinPartida() {
 		System.out.println("Partida finalizada");
 		if (Gestor.partida.isEmpate()) {
