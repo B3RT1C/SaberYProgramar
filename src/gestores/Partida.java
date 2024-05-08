@@ -8,9 +8,7 @@ import jugadores.Jugador;
 import preguntas.Pregunta;
 
 public class Partida {
-	private static ArrayList<String> ganadores = new ArrayList<>();
-
-	
+	private ArrayList<String> ganadores = new ArrayList<>();
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
 	private ArrayList<Pregunta> preguntas = new ArrayList<>();
 	
@@ -29,7 +27,7 @@ public class Partida {
 	private void reiniciarPartida() {
 		this.jugadores.clear();
 		this.preguntas.clear();
-		Partida.ganadores.clear();
+		this.ganadores.clear();
 	}
 	
 	private void generarPreguntas(int numPreguntas) {
@@ -127,25 +125,27 @@ public class Partida {
 	//Devuelve un array para controlar el caso de un empate
 	//Para que se considere hanar has de conseguir almenos 1 punto, para que si juegas tu solo y no consigues nigún punto no cuente como victorio
 	public ArrayList<String> getGanador() {
-		int highestPuntos = 0;
-		
-		for (Jugador i : this.jugadores) {
-			if (i.getPuntosPartida() > highestPuntos) {
-				highestPuntos = i.getPuntosPartida();
+		if (this.ganadores.isEmpty()) {
+			int highestPuntos = 0;
+			
+			for (Jugador i : this.jugadores) {
+				if (i.getPuntosPartida() > highestPuntos) {
+					highestPuntos = i.getPuntosPartida();
+				}
 			}
+			
+			for (Jugador i : this.jugadores) {
+				if (i.getPuntosPartida() == highestPuntos && highestPuntos > 0) {
+					this.ganadores.add(i.getNombre());
+				}
+			}			
 		}
 		
-		for (Jugador i : this.jugadores) {
-			if (i.getPuntosPartida() == highestPuntos && highestPuntos > 0) {
-				Partida.ganadores.add(i.getNombre());
-			}
-		}
-		
-		return Partida.ganadores;
+		return this.ganadores;
 	}
 	
 	public boolean isEmpate() {
-		return (Partida.ganadores.size() > 1 && this.numJugadores > 1);
+		return (this.ganadores.size() > 1 && this.numJugadores > 1);
 	}
 	
 }

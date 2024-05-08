@@ -1,113 +1,36 @@
 package main.GUI;
 
+import java.awt.Component;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import interfaces.Menu;
-import preguntas.Pregunta;
-
-public class JuegoGUI extends JFrame implements Menu{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+@SuppressWarnings("serial")
+public class JuegoGUI extends JFrame {
+	private Component actual;
+	private VisualesGUI visuales;
+	
 	public JuegoGUI() {
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setSize(640,480);
+		this.setTitle("Saber Y Programar");
 		
-		
-		this.setSize(500, 500);
-		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+
+		this.visuales = new VisualesGUI(this);
+		visuales.mostrarPrincipal();
 	}
 	
-	@Override
-	public void mostrarPrincipal() {
-		// TODO Auto-generated method stub
-		
+	void cambiarJPanel(JPanel nuevo) {
+		if (nuevo != null) {
+			try {
+				this.remove(actual);
+			} catch (NullPointerException e) {
+			}
+			actual = this.add(nuevo);
+			this.validate();
+		}
 	}
-
-	@Override
-	public String elegirPrincipal() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void mostrarGestorJugadores() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String elegirGestorJugadores() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void mostrarHistorico() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void volver() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mostrarRanking() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mostrarElegirCantidadJugadores() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int[] elegirCantidadJugadores() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void mostrarElegirJugador() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String elegirJugador() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void mostrarElegirRondas() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int elegirRondas() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void mostrarPregunta(Pregunta pregunta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mostrarFinPartida() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }

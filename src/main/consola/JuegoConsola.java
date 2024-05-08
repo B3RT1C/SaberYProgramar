@@ -1,36 +1,22 @@
 package main.consola;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import gestores.Gestor;
-import interfaces.Menu;
 import jugadores.Cpu;
 import jugadores.Jugador;
-import preguntas.Ingles;
 import preguntas.Pregunta;
 import util.Consts;
 
-public class JuegoConsola implements Menu {
-	private Scanner in = new Scanner(System.in);
+public class JuegoConsola {
+	static Scanner in = new Scanner(System.in);
+	private VisualesConsola visuales = new VisualesConsola();
 	
 	public JuegoConsola() {
 		System.out.println(Consts.MENU_TITLE);
 		this.loopPrincipal();
 	}
 	
-	@Override
-	public void mostrarPrincipal() {
-		System.out.println("\n"
-						 + "a) Jugar Partida -> Permite jugar una nueva partida\n"
-						 + "b) Ranking -> Muestra el ranking de los mejores jugadores\n"
-						 + "c) Histórico -> Muestra el histórico de partidas\n"
-						 + "d) Jugadores -> Permite acceder a un submenú de gestión de jugadores\n"
-						 + "e) Salir -> Termina el programa"
-						 + "\n");
-	}
-
-	@Override
 	public String elegirPrincipal() {
 		return this.elegirOpcion("[ABCDE]", true);
 	}
@@ -38,22 +24,22 @@ public class JuegoConsola implements Menu {
 	private void loopPrincipal() {
 		String opcion;
 		do {
-			this.mostrarPrincipal();
+			this.visuales.mostrarPrincipal();
 			opcion = this.elegirPrincipal();
 			switch (opcion) {
 				case "A": {
 					this.partidaStartup();
 					this.loopJuego();
-					this.mostrarFinPartida();
+					this.visuales.mostrarFinPartida();
 					this.partidaCloseup();
 					break;
 				
 				} case "B": {
-					this.mostrarRanking();
+					this.visuales.mostrarRanking();
 					break;
 				
 				} case "C": {
-					this.mostrarHistorico();
+					this.visuales.mostrarHistorico();
 					break;
 				
 				} case "D": {
@@ -68,17 +54,6 @@ public class JuegoConsola implements Menu {
 		} while (!opcion.equals("E"));
 	}
 
-	@Override
-	public void mostrarGestorJugadores() {
-		System.out.println("\n"
-				 + "a) Ver Jugadores -> Muestra la lista de jugadores registrados\n"
-				 + "b) Añadir jugador -> Permite añadir al sistema un nuevo jugador\n"
-				 + "c) Eliminar jugador -> Permite eliminar del sistema a un jugador registrado\n"
-				 + "d) Volver -> Vuelve al menú principal\n"
-				 + "\n");
-	}
-
-	@Override
 	public String elegirGestorJugadores() {
 		return this.elegirOpcion("[ABCD]", true);
 	}
@@ -86,11 +61,11 @@ public class JuegoConsola implements Menu {
 	private void loopGestorjugadores() {
 		String opcion;
 		do {
-			this.mostrarGestorJugadores();
+			this.visuales.mostrarGestorJugadores();
 			opcion = this.elegirGestorJugadores();
 			switch (opcion) {
 				case "A": {
-					this.mostrarContenidoArchivo(Gestor.jugadores.getNombres());
+					this.visuales.mostrarJugadores();
 					break;
 				
 				} case "B": {
@@ -141,35 +116,6 @@ public class JuegoConsola implements Menu {
 		System.out.println(Consts.MENU_VOLVER+"\n");
 	}
 
-	@Override
-	public void mostrarHistorico() {
-		System.out.println();
-		this.mostrarContenidoArchivo(Gestor.historial.getHistorial());
-		this.volver();
-		System.out.println();
-	}
-	
-	@Override
-	public void volver() {
-		System.out.println("\nPulsa enter o introduce cualquier valor para volver: ");
-		this.in.nextLine();
-		System.out.println(Consts.MENU_VOLVER);
-	}
-
-	@Override
-	public void mostrarRanking() {
-		System.out.println();
-		this.mostrarContenidoArchivo(Gestor.jugadores.getRanking());
-		this.volver();
-		System.out.println();
-	}
-
-	@Override
-	public void mostrarElegirCantidadJugadores() {
-		System.out.println("Dime cuantos jugadores quieres que existan en la partida (1-4)");
-	}
-	
-	@Override
 	public int[] elegirCantidadJugadores() {
 		int numJugadores = Integer.valueOf(this.elegirOpcion("[1234]", true));
 		
@@ -181,12 +127,6 @@ public class JuegoConsola implements Menu {
 		return new int[]{numJugadores, numHumanos};
 	}
 
-	@Override
-	public void mostrarElegirJugador() {
-		System.out.println("Dime el nombre de un jugador para añadirlo a la partida");
-	}
-
-	@Override
 	public String elegirJugador() {
 		String nombre = this.elegirOpcion("CPU\\d*", false);
 		
@@ -205,18 +145,6 @@ public class JuegoConsola implements Menu {
 		return nombre;
 	}
 
-	@Override
-	public void mostrarElegirRondas() {
-		System.out.println("\n"
-						 + "Cuantas rondas quieres jugar\n"
-						 + "a) Partida rápida: 3 rondas\n"
-						 + "b) Partida corta: 5 rondas\n"
-						 + "c) Partida normal: 10 rondas\n"
-						 + "d) PArtida larga: 20 rondas\n"
-						 + "\n");
-	}
-
-	@Override
 	public int elegirRondas() {
 		String opcion = this.elegirOpcion("[ABCD]", true);
 
@@ -239,38 +167,6 @@ public class JuegoConsola implements Menu {
 	}
 	}
 	
-	@Override
-	public void mostrarPregunta(Pregunta pregunta) {
-		System.out.println(pregunta.getEnunciado());
-		if (pregunta instanceof Ingles) {
-			char letra = 'a';
-			for (String i : ((Ingles) pregunta).getOpciones()) {
-				System.out.println(letra + ") " + i);
-				letra++;
-			}
-		}
-	}
-
-	@Override
-	public void mostrarFinPartida() {
-		System.out.println("Partida finalizada");
-		if (Gestor.partida.isEmpate()) {
-			System.out.println("¡Es un empate!");
-		}
-		System.out.println(Gestor.partida.getPuntuaciones());
-	}
-	
-	private void mostrarContenidoArchivo(ArrayList<String> contenido) {
-		if (contenido.isEmpty()) {
-			System.out.println(Consts.MENU_CERO_CONTENIDO);
-
-		} else {
-			for (String i : contenido) {
-				System.out.println(i);
-			}
-		}
-	}
-	
 	//toMatch = true para que pida valores nuevos hasta cumplir el patrón y toMatch = false para que pida valores nuevos hasta no cumplir el patrón 
 	private String elegirOpcion(String patron, boolean toMatch) {
 		String opcion = in.nextLine().toUpperCase();
@@ -283,10 +179,10 @@ public class JuegoConsola implements Menu {
 	}
 	
 	private void partidaStartup() {
-		this.mostrarElegirRondas();
+		visuales.mostrarElegirRondas();
 		int numRondas = this.elegirRondas();
 		
-		this.mostrarElegirCantidadJugadores();
+		visuales.mostrarElegirCantidadJugadores();
 		int[] infoNumJugadores = this.elegirCantidadJugadores();
 		int numJugadores = infoNumJugadores[0];
 		int numHumanos = infoNumJugadores[1];
@@ -295,7 +191,7 @@ public class JuegoConsola implements Menu {
 		Gestor.partida.configurar(numJugadores, numRondas);
 		
 		while (numHumanos > 0) {
-			this.mostrarElegirJugador();
+			this.visuales.mostrarElegirJugador();
 			String jugador = this.elegirJugador();
 			
 			if (jugador != null) {
@@ -325,7 +221,7 @@ public class JuegoConsola implements Menu {
 			turno = (turno+1)%Gestor.partida.getNumJugadores();
 			
 			System.out.println("\nTurno de " + jugador.getNombre());
-			this.mostrarPregunta(pregunta);
+			this.visuales.mostrarPregunta(pregunta);
 
 			if (jugador instanceof Cpu) {
 				try {
@@ -334,26 +230,14 @@ public class JuegoConsola implements Menu {
 				}
 			}
 			
-			String respuestaCPU = "";
-			if (jugador instanceof Cpu) {
-				respuestaCPU = ((Cpu)jugador).generarRespuesta(pregunta);
-				System.out.println(respuestaCPU);
-			}
-			if (jugador.responder(jugador instanceof Cpu? respuestaCPU : in.nextLine(), pregunta)) {
-				System.out.println("¡Pregunta acertada! +1 punto\n");
-			
-			} else {
-				System.out.println("Pregunta fallada\n"
-								 + "Respuesta correcta:" + pregunta.getSolucion() + "\n");
-			}
-			
-			if (jugador instanceof Cpu) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-				}
-			}
+			String respuesta = this.elegirRespuesta(jugador, pregunta);
+
+			this.visuales.mostrarFinPregunta(jugador, respuesta, pregunta);
 		}
+	}
+	
+	private String elegirRespuesta(Jugador jugador, Pregunta pregunta) {
+		return jugador instanceof Cpu? ((Cpu)jugador).generarRespuesta(pregunta) : in.nextLine();
 	}
 	
 	private void partidaCloseup() {
@@ -362,8 +246,8 @@ public class JuegoConsola implements Menu {
 		for (String i : Gestor.partida.getGanador()) {
 			Gestor.jugadores.partidaGanada(i);
 		}
-		
 		Gestor.jugadores.actualizarRanking();
+		
 		Gestor.log.escribirArchivo(Consts.LOG_FIN_PARTIDA(Gestor.partida.getNumJugadores(), Gestor.partida.getGanador()));
 	}
 }

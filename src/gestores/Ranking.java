@@ -89,26 +89,29 @@ public class Ranking {
 			int index = this.findIndiceJugador(nombre);
 			int partidasGanadas = this.partidasGanadasJugadores.get(index);
 			this.partidasGanadasJugadores.set(index, partidasGanadas+1);
-			this.actualizarRanking();
 		}
 	}
 	
 	private void ordenarRanking() {
 		ArrayList<Integer> partidasGanadas = this.getValoresDiferentesPartidasGanadas();
 		
+		ArrayList<String> auxRanking = new ArrayList<>();
 		ArrayList<String> auxNombresJugadores = new ArrayList<>();
 		ArrayList<Integer> auxPartidasGanadasJugadores = new ArrayList<>();
 		
+		//TODO optimizar con un hasmap? key: puntuacion, val: jugador (key: 1, val: juan, pepe)
 		for (int i : partidasGanadas) {
 			for (int j = 0; j < this.partidasGanadasJugadores.size(); j++) {
 				
 				if (i == this.partidasGanadasJugadores.get(j)) {
+					auxRanking.add(this.nombreJugadores.get(j)+" "+this.partidasGanadasJugadores.get(j));
 					auxNombresJugadores.add(this.nombreJugadores.get(j));
 					auxPartidasGanadasJugadores.add(this.partidasGanadasJugadores.get(j));
 				}
 			}
 		}
-		
+
+		this.ranking = auxRanking;
 		this.nombreJugadores = auxNombresJugadores;
 		this.partidasGanadasJugadores = auxPartidasGanadasJugadores;
 	}
@@ -126,11 +129,12 @@ public class Ranking {
 		}
 		
 		Collections.sort(valoresDiferentes);
+		Collections.reverse(valoresDiferentes);
 		
 		return valoresDiferentes;
 	}
 	
-	//Se llama a este método cada vez que se llama a partidaGanada o se crea o borra un jugador
+	//Se llama a este método cada vez que se termina una partida o se crea o borra un jugador
 	public void actualizarRanking() {
 		this.ordenarRanking();
 		this.escribirArchivo();

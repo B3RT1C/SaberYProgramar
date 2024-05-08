@@ -48,6 +48,6 @@ public abstract class Pregunta {
 	}
 
 	public boolean verificarRespuesta(String respuesta) {
-		return this.solucion == respuesta;
+		return this.solucion.equals(respuesta);
 	}
 }

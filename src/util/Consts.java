@@ -44,9 +44,12 @@ public class Consts {
 		return "Inicio de partida con " + numHumanos + " jugadores humanos, " + numCpu + " jugadores CPU";
 	}
 	public static final String LOG_FIN_PARTIDA(int numJugadores, ArrayList<String> ganador) {
-		String mensaje = "Fin partida con " + numJugadores + ". ";
+		String mensaje = "Fin partida con " + numJugadores + " jugador/es. ";
 		if (ganador.size() == 1) {
-			mensaje += "Ganador: " + ganador;
+			mensaje += "Ganador: " + ganador.get(0);
+		
+		} else if (ganador.size() == 0) {
+			mensaje += "No hubo ganador/es";
 		
 		} else {
 			String ganadores = "";

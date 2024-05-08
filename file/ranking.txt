@@ -1,1 +1,3 @@
+JUAN 1
 JAVIER 0
+LU 0
