@@ -1,25 +1,40 @@
 package main.GUI;
 
+import java.awt.Component;
+
+import javax.swing.JPanel;
+
 import interfaces.Menu;
+import jugadores.Jugador;
 import preguntas.Pregunta;
 
 public class VisualesGUI implements Menu {
-
-	JuegoGUI frame;
+	private Component actual;
+	private JuegoGUI frame;
 	
 	VisualesGUI(JuegoGUI frame) {
 		this.frame = frame;
 	}
-	
-	@Override
-	public void mostrarPrincipal() {
-		frame.cambiarJPanel(new MenuPrincipal(frame));
+
+	private void cambiarJPanel(JPanel nuevo) {
+		if (nuevo != null) {
+			try {
+				frame.remove(this.actual);
+			} catch (NullPointerException e) {
+			}
+			this.actual = frame.add(nuevo);
+			frame.validate();
+		}
 	}
 
 	@Override
+	public void mostrarPrincipal() {
+		this.cambiarJPanel(new MenuPrincipal());
+	}
+	
+	@Override
 	public void mostrarGestorJugadores() {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuGestionJugadores());
 	}
 
 	@Override
@@ -69,11 +84,19 @@ public class VisualesGUI implements Menu {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void mostrarFinPregunta(Jugador jugador, String respuesta, Pregunta pregunta) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void mostrarFinPartida() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 }
