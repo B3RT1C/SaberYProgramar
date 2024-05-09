@@ -75,7 +75,7 @@ public class Partida {
 	
 	private boolean jugadorEnPartida(String nombreNewJugador) {
 		for (Jugador i : this.jugadores) {
-			if (i.getNombre().equals(nombreNewJugador)) {
+			if (i.getNombre().equalsIgnoreCase(nombreNewJugador)) {
 				return true;
 			}
 		}

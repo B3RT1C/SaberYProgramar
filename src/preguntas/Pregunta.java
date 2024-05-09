@@ -15,7 +15,7 @@ public abstract class Pregunta {
 	protected abstract String generarSolucion();
 	
 	public static Pregunta generarAleatoria() {
-		String randomTipoPregunta = Consts.TIPOS_PREGUNTAS[Consts.RAND.nextInt(0, Consts.TIPOS_PREGUNTAS.length)];
+		String randomTipoPregunta = Consts.TIPOS_PREGUNTAS[Gestor.rand.nextInt(0, Consts.TIPOS_PREGUNTAS.length)];
 		Pregunta pregunta = new Mates();
 		//En el caso de que el new Letras() o new Ingles() lance una excepción, pregunta siempre será de tipo Mates y la excepción será capturada por el try catch
 		try {

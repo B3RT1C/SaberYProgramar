@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import gestores.Gestor;
 import util.Consts;
 
 public class Ingles extends Pregunta {
@@ -46,7 +47,7 @@ public class Ingles extends Pregunta {
 		//Todos los encunciados en el archivo ingles.txt están cada 5 líneas por lo que
 		//Si hay 5000 líneas en el archivo todas las líneas que se encuentren en n*5 siendo
 		//n {0, 5000/5} tendrán siempre un enunciado, exceptiando la línea 5000
-		int randomIndiceEnunciado = Consts.RAND.nextInt(0,(preguntasRespuestas.size()/(Consts.TOTAL_OPCIONES_INGLES+1))) * (Consts.TOTAL_OPCIONES_INGLES+1);
+		int randomIndiceEnunciado = Gestor.rand.nextInt(0,(preguntasRespuestas.size()/(Consts.TOTAL_OPCIONES_INGLES+1))) * (Consts.TOTAL_OPCIONES_INGLES+1);
 		return preguntasRespuestas.get(randomIndiceEnunciado);
 	}
 	

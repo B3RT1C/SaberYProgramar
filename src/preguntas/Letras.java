@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import gestores.Gestor;
 import util.Consts;
 
 public class Letras extends Pregunta {
@@ -33,7 +34,7 @@ public class Letras extends Pregunta {
 	protected String generarSolucion() {
 		String palabraAleatoria;
 		do {
-			palabraAleatoria = Letras.palabras.get(Consts.RAND.nextInt(0, Letras.palabras.size()));
+			palabraAleatoria = Letras.palabras.get(Gestor.rand.nextInt(0, Letras.palabras.size()));
 		} while (palabraAleatoria.length() < Consts.MIN_LENGTH_PALABRA_PERMITIDO);
 		return palabraAleatoria;
 	}

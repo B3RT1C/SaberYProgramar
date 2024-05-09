@@ -92,7 +92,6 @@ public class JuegoConsola {
 		if (Gestor.jugadores.crearJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
 			
-			
 		} else {
 			System.out.println(Consts.MENU_ADD_JUGADOR_ERROR);
 			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_ADD_JUGADOR_ERROR);
@@ -195,7 +194,11 @@ public class JuegoConsola {
 			String jugador = this.elegirJugador();
 			
 			if (jugador != null) {
-				Gestor.partida.addPersona(jugador);
+				while (!Gestor.partida.addPersona(jugador)) {
+					System.out.println(Consts.ERROR_JUGADOR_REPETIDO);
+					Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_JUGADOR_REPETIDO);
+					jugador = this.elegirJugador();
+				}				
 				numHumanos--;
 			}
 		}

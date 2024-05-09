@@ -3,7 +3,6 @@ package util;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Random;
 
 import preguntas.Ingles;
 import preguntas.Letras;
@@ -29,11 +28,10 @@ public class Consts {
 	public static final String ERROR_CREAR_ARCHIVO = "ERROR: no se pudo crear el archivo";
 	public static final String ERROR_MOVER_ARCHIVO = "ERROR: no se pudo mover el archivo";
 	public static final String ERROR_OPCION_NO_VALIDA = "ERROR: opción no válida, introduce otro valor";
+	public static final String ERROR_JUGADOR_REPETIDO = "ERROR: jugador ya existente en la partida, introduce otro jugador";
 	
 	public static final double RATIO_ESCONDER_LETRAS = 1d/3d;
 
-	public static final Random RAND = new Random();
-	
 	public static final int TOTAL_OPCIONES_INGLES = 4;
 	
 	public static final int MIN_LENGTH_PALABRA_PERMITIDO = 4;

@@ -1,5 +1,6 @@
 package preguntas;
 
+import gestores.Gestor;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import util.Consts;
@@ -13,13 +14,13 @@ public class Mates extends Pregunta {
 	@Override
 	protected String generarEnunciado() {
 		String enunciado = "";
-		int totalEnteros = Consts.RAND.nextInt(4, 8 +1); 
+		int totalEnteros = Gestor.rand.nextInt(4, 8 +1); 
 		
 		for (int i = 0; i < totalEnteros; i++) {
-			enunciado += Consts.RAND.nextInt(2, 12 +1);
+			enunciado += Gestor.rand.nextInt(2, 12 +1);
 			
 			if (i != totalEnteros-1) {
-				enunciado += Consts.OPERADORES[Consts.RAND.nextInt(0, Consts.OPERADORES.length)];
+				enunciado += Consts.OPERADORES[Gestor.rand.nextInt(0, Consts.OPERADORES.length)];
 			}
 		}
 

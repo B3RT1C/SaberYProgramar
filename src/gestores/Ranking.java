@@ -145,9 +145,12 @@ public class Ranking {
 			//Sobreescribe todo el archivo a una cadena sin nada/borra el contenido del archivo
 			Files.writeString(Consts.PATH_RANKING, "");
 			
-			for (int i = 0; i < nombreJugadores.size(); i++) {
-				String registro = nombreJugadores.get(i) + " " + partidasGanadasJugadores.get(i) + "\n";
-				Files.writeString(Consts.PATH_RANKING, registro, StandardOpenOption.APPEND);
+			for (String i : this.ranking) {
+				Files.writeString(Consts.PATH_RANKING, i+"\n", StandardOpenOption.APPEND);
+				
+//			for (int i = 0; i < nombreJugadores.size(); i++) {
+//				String registro = nombreJugadores.get(i) + " " + partidasGanadasJugadores.get(i) + "\n";
+//				Files.writeString(Consts.PATH_RANKING, registro, StandardOpenOption.APPEND);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
