@@ -45,7 +45,7 @@ public class Ranking {
 	//No se pueden crear jugadores llamados CPU o CPU[número]
 	public boolean crearJugador(String jugador) {
 		jugador = jugador.toUpperCase();
-		if (!this.existsJugador(jugador) && !jugador.matches("CPU\\d*")) {
+		if (!this.existsJugador(jugador) && !jugador.matches("CPU\\d*") && !jugador.equals("")) {
 			this.ranking.add(jugador + " 0");
 			this.nombreJugadores.add(jugador);
 			this.partidasGanadasJugadores.add(0);

@@ -1,15 +1,14 @@
 package main.GUI;
 
-import java.awt.Component;
-
 import javax.swing.JPanel;
 
 import interfaces.Menu;
 import jugadores.Jugador;
 import preguntas.Pregunta;
+import util.Consts;
 
-public class VisualesGUI implements Menu {
-	private Component actual;
+class VisualesGUI implements Menu {
+	private JPanel actual;
 	private JuegoGUI frame;
 	
 	VisualesGUI(JuegoGUI frame) {
@@ -22,8 +21,9 @@ public class VisualesGUI implements Menu {
 				frame.remove(this.actual);
 			} catch (NullPointerException e) {
 			}
-			this.actual = frame.add(nuevo);
-			frame.validate();
+			this.actual = (JPanel) frame.add(nuevo);
+			frame.revalidate();
+//			frame.repaint();
 		}
 	}
 
@@ -39,26 +39,35 @@ public class VisualesGUI implements Menu {
 
 	@Override
 	public void mostrarJugadores() {
-		// TODO Auto-generated method stub
+		this.cambiarJPanel(new MenuMostrarJugadores());
 		
 	}
 
 	@Override
 	public void mostrarHistorico() {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuMostrarHistorico());
 	}
 
 	@Override
 	public void volver() {
-		// TODO Auto-generated method stub
+		if (this.actual instanceof MenuPrincipal) {
+			
+			System.exit(0);
 		
+		} else if (this.actual instanceof MenuMostrarRanking 
+					|| this.actual instanceof MenuMostrarHistorico 
+						|| this.actual instanceof MenuGestionJugadores) {
+			this.mostrarPrincipal();
+		
+		} else if (this.actual instanceof MenuMostrarJugadores
+					|| this.actual instanceof MenuModificarJugador) {
+			this.mostrarGestorJugadores();
+		}
 	}
 
 	@Override
 	public void mostrarRanking() {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuMostrarRanking());
 	}
 
 	@Override
@@ -69,8 +78,12 @@ public class VisualesGUI implements Menu {
 
 	@Override
 	public void mostrarElegirJugador() {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuAnyadirJugador());
+	}
+	
+	@Override
+	public void mostrarEliminarJugador() {
+		this.cambiarJPanel(new MenuEliminarJugador());
 	}
 
 	@Override
@@ -96,7 +109,5 @@ public class VisualesGUI implements Menu {
 		// TODO Auto-generated method stub
 		
 	}
-
-	
 
 }

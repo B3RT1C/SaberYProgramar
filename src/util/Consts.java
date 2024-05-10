@@ -69,8 +69,11 @@ public class Consts {
 	public static final String MENU_SALIR = "Saliendo...";
 	public static final String MENU_VOLVER = "Volviendo...";
 	public static final String MENU_FORMATEO_NOMBRES = "Las mayúscula y minúsculas serán ignoradas en los nombres de los jugadores";
-	public static final String MENU_ADD_JUGADOR = "Escribe un nombre para añadir un jugador al sistema";
-	public static final String MENU_ADD_JUGADOR_ERROR = "El jugador que has introducido ya existía en el sistema";
+	public static final String MENU_ADD_JUGADOR = "Escribe un nombre para añadir un jugador";
+	public static final String MENU_ADD_JUGADOR_INEXISTENTE(String nombre) {
+		return "El jugador: " + nombre.toUpperCase() + " no existe en el sistema, ¿quieres añadirlo?";
+	}
+	public static final String MENU_ADD_JUGADOR_ERROR = "El nombre del jugador que has introducido no es válido";
 	public static final String MENU_REMOVE_JUGADOR = "Escribe un nombre de un jugador para borrarlo del sistema";
 	public static final String MENU_REMOVE_JUGADOR_ERROR = "El jugador que has introducido no existe en el sistema";
 	public static final String MENU_SUCCEED = "Acción realizada con éxito";

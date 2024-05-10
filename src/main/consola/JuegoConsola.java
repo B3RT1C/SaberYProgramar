@@ -69,10 +69,12 @@ public class JuegoConsola {
 					break;
 				
 				} case "B": {
+					this.visuales.mostrarElegirJugador();
 					this.addJugador();
 					break;
 				
 				} case "C": {
+					this.visuales.mostrarEliminarJugador();
 					this.removeJugador();
 					break;
 					
@@ -85,9 +87,6 @@ public class JuegoConsola {
 	}
 	
 	private void addJugador() {
-		System.out.println("\n"+Consts.MENU_ADD_JUGADOR);
-		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
-	
 		String nombre = in.nextLine();
 		if (Gestor.jugadores.crearJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
@@ -100,14 +99,10 @@ public class JuegoConsola {
 	}
 	
 	private void removeJugador() {
-		System.out.println("\n"+Consts.MENU_REMOVE_JUGADOR);
-		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
-		
 		String nombre = in.nextLine().toUpperCase();
 		if (Gestor.jugadores.removeJugador(nombre)) {
 			System.out.println(Consts.MENU_SUCCEED);
 			
-		
 		} else {
 			System.out.println(Consts.MENU_REMOVE_JUGADOR_ERROR);
 			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_REMOVE_JUGADOR_ERROR);
@@ -130,7 +125,7 @@ public class JuegoConsola {
 		String nombre = this.elegirOpcion("CPU\\d*", false);
 		
 		if (!Gestor.jugadores.existsJugador(nombre)) {
-			System.out.println("El jugador: " + nombre.toUpperCase() + " no existe en el sistema, ¿quieres añadirlo? Y/N");
+			System.out.println(Consts.MENU_ADD_JUGADOR_INEXISTENTE(nombre)+" Y/N");
 			String opcion = this.elegirOpcion("[YN]", true);
 			
 			if (opcion.equals("Y")) {
@@ -195,7 +190,7 @@ public class JuegoConsola {
 			
 			if (jugador != null) {
 				while (!Gestor.partida.addPersona(jugador)) {
-					System.out.println(Consts.ERROR_JUGADOR_REPETIDO);
+					System.err.println(Consts.ERROR_JUGADOR_REPETIDO);
 					Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_JUGADOR_REPETIDO);
 					jugador = this.elegirJugador();
 				}				

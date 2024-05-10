@@ -70,7 +70,14 @@ public class VisualesConsola implements Menu {
 	
 	@Override
 	public void mostrarElegirJugador() {
-		System.out.println("Dime el nombre de un jugador para añadirlo a la partida");
+		System.out.println("\n"+Consts.MENU_ADD_JUGADOR);
+		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
+	}
+	
+	@Override
+	public void mostrarEliminarJugador() {
+		System.out.println("\n"+Consts.MENU_REMOVE_JUGADOR);
+		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
 	}
 	
 	@Override

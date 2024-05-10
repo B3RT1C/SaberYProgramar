@@ -1,10 +1,10 @@
 package main.GUI;
 
-public class ConstsGUI {
-	public static final int frameWidth = 640;
-	public static final int frameHeight = 480;
+class ConstsGUI {
+	static final int FRAMEWIDTH = 640;
+	static final int FRAMEHEIGHT = 480;
 	
-	public static final int selectButonWidth = 200;
-	public static final int selectButonHeight = 20;
+	static final int BUTTONWIDTH = 200;
+	static final int BUTTONHEIGHT = 20;
 	
 }
