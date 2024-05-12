@@ -29,6 +29,8 @@ public interface Menu {
 	public abstract void mostrarElegirRondas();
 //	public abstract int elegirRondas();
 	
+	public abstract void mostrarElegirJugadorPartida();
+	
 	public abstract void mostrarPregunta(Pregunta pregunta);
 	
 	public abstract void mostrarFinPregunta(Jugador jugador, String respuesta, Pregunta pregunta);

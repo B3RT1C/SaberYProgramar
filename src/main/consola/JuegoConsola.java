@@ -15,6 +15,7 @@ public class JuegoConsola {
 	public JuegoConsola() {
 		System.out.println(Consts.MENU_TITLE);
 		this.loopPrincipal();
+		JuegoConsola.in.close();
 	}
 	
 	public String elegirPrincipal() {
@@ -185,7 +186,7 @@ public class JuegoConsola {
 		Gestor.partida.configurar(numJugadores, numRondas);
 		
 		while (numHumanos > 0) {
-			this.visuales.mostrarElegirJugador();
+			this.visuales.mostrarElegirJugadorPartida();
 			String jugador = this.elegirJugador();
 			
 			if (jugador != null) {

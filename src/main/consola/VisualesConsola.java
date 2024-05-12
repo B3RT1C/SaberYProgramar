@@ -87,8 +87,13 @@ public class VisualesConsola implements Menu {
 						 + "a) Partida rápida: 3 rondas\n"
 						 + "b) Partida corta: 5 rondas\n"
 						 + "c) Partida normal: 10 rondas\n"
-						 + "d) PArtida larga: 20 rondas\n"
+						 + "d) Partida larga: 20 rondas\n"
 						 + "\n");
+	}
+	
+	@Override
+	public void mostrarElegirJugadorPartida() {
+		this.mostrarElegirJugador();
 	}
 	
 	@Override

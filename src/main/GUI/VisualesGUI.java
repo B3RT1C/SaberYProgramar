@@ -1,15 +1,17 @@
 package main.GUI;
 
+import java.util.Stack;
+
 import javax.swing.JPanel;
 
 import interfaces.Menu;
 import jugadores.Jugador;
 import preguntas.Pregunta;
-import util.Consts;
 
 class VisualesGUI implements Menu {
 	private JPanel actual;
 	private JuegoGUI frame;
+	private Stack<JPanel> ultimoPanel = new Stack<>();
 	
 	VisualesGUI(JuegoGUI frame) {
 		this.frame = frame;
@@ -21,15 +23,18 @@ class VisualesGUI implements Menu {
 				frame.remove(this.actual);
 			} catch (NullPointerException e) {
 			}
+			this.ultimoPanel.push(this.actual);
 			this.actual = (JPanel) frame.add(nuevo);
 			frame.revalidate();
-//			frame.repaint();
+			frame.repaint();
 		}
 	}
 
 	@Override
 	public void mostrarPrincipal() {
 		this.cambiarJPanel(new MenuPrincipal());
+		//Se limpia el stack porque si se pulsa el boton de salir de la partida quedan paneles no deseados dentro del stack
+		this.ultimoPanel.clear();
 	}
 	
 	@Override
@@ -50,19 +55,21 @@ class VisualesGUI implements Menu {
 
 	@Override
 	public void volver() {
-		if (this.actual instanceof MenuPrincipal) {
-			
-			System.exit(0);
+//		if (this.actual instanceof MenuPrincipal) {
+//			
+//			System.exit(0);
+//		
+//		} else if (this.actual instanceof MenuMostrarRanking 
+//					|| this.actual instanceof MenuMostrarHistorico 
+//						|| this.actual instanceof MenuGestionJugadores) {
+//			this.mostrarPrincipal();
+//		
+//		} else if (this.actual instanceof MenuMostrarJugadores
+//					|| this.actual instanceof MenuImputJugador) {
+//			this.mostrarGestorJugadores();
+//		}
 		
-		} else if (this.actual instanceof MenuMostrarRanking 
-					|| this.actual instanceof MenuMostrarHistorico 
-						|| this.actual instanceof MenuGestionJugadores) {
-			this.mostrarPrincipal();
-		
-		} else if (this.actual instanceof MenuMostrarJugadores
-					|| this.actual instanceof MenuModificarJugador) {
-			this.mostrarGestorJugadores();
-		}
+		this.cambiarJPanel(this.ultimoPanel.pop());
 	}
 
 	@Override
@@ -72,8 +79,7 @@ class VisualesGUI implements Menu {
 
 	@Override
 	public void mostrarElegirCantidadJugadores() {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuElegirCantidadJugadores());
 	}
 
 	@Override
@@ -88,14 +94,17 @@ class VisualesGUI implements Menu {
 
 	@Override
 	public void mostrarElegirRondas() {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuElegirRondas());
+	}
+	
+	@Override
+	public void mostrarElegirJugadorPartida() {
+		this.cambiarJPanel(new MenuAnyadirJugadorPartida());
 	}
 
 	@Override
 	public void mostrarPregunta(Pregunta pregunta) {
-		// TODO Auto-generated method stub
-		
+		this.cambiarJPanel(new MenuPregunta(pregunta));
 	}
 	
 	@Override

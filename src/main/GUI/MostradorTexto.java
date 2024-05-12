@@ -15,6 +15,12 @@ class MostradorTexto extends JScrollPane {
 		this.texto.setEditable(false);
 		this.setViewportView(texto);
 	}
+	
+	MostradorTexto(String info) {
+		this.texto = new JTextArea(info);
+		this.texto.setEditable(false);
+		this.setViewportView(texto);
+	}
 
 	private String listaAString(ArrayList<String> lista) {
 		String texto = "";

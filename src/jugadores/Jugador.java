@@ -14,7 +14,7 @@ public class Jugador {
 
 	public boolean responder(String respuesta, Pregunta pregunta) {
 		//En las preguntas de inglés se tomará como respuesta incorrecta automáticamente una respuesta diferente a (a, b, c, d)
-		if (pregunta instanceof Ingles && respuesta.matches("[ABCD]||[abcd]")) {
+		if (pregunta instanceof Ingles && respuesta.matches("[ABCDabcd]")) {
 			respuesta = respuesta.toUpperCase();
 			char opcion = respuesta.toCharArray()[0];
 			respuesta = ((Ingles)pregunta).getOpciones().get(opcion - 'A');
