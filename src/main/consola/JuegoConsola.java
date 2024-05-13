@@ -207,17 +207,11 @@ public class JuegoConsola {
 	}
 	
 	private void loopJuego() {
-		int ronda = 1;
-		int turno = 0;
 		while (!Gestor.partida.isTerminada()) {
 			Jugador jugador = Gestor.partida.nextJugador();
 			Pregunta pregunta = Gestor.partida.nextPregunta();
 			
-			if (turno == 0) {
-				System.out.println("\nRonda " + ronda);
-				ronda++;
-			}
-			turno = (turno+1)%Gestor.partida.getNumJugadores();
+			System.out.println("\nRonda " + Gestor.partida.getRondaX());
 			
 			System.out.println("\nTurno de " + jugador.getNombre());
 			this.visuales.mostrarPregunta(pregunta);

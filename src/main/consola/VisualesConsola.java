@@ -115,11 +115,10 @@ public class VisualesConsola implements Menu {
 		}
 
 		if (jugador.responder(respuesta , pregunta)) {
-			System.out.println("¡Pregunta acertada! +1 punto\n");
+			System.out.println(Consts.PREGUNTA_ACERTADA+"\n");
 		
 		} else {
-			System.out.println("Pregunta fallada\n"
-							 + "Respuesta correcta:" + pregunta.getSolucion() + "\n");
+			System.out.println(Consts.PREGUNTA_FALLADA(pregunta) + "\n");
 		}
 		
 		if (jugador instanceof Cpu) {

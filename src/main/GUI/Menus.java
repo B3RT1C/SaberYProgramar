@@ -1,6 +1,7 @@
 package main.GUI;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import gestores.Gestor;
+import jugadores.Cpu;
+import jugadores.Jugador;
+import preguntas.Ingles;
+import preguntas.Pregunta;
 import util.Consts;
 
 /*
@@ -358,7 +363,7 @@ class MenuElegirRondas extends MenuSeleccion {
 @SuppressWarnings("serial")
 class MenuElegirCantidadJugadores extends JPanel {
 	//No se pueden elegir 0 jugadores para una partida, si hay 1 jugador de humanos/cpus y 0 del otro, el que vale 1 no podrá ver si valor reducido para que no existan 0 jugadores en la partida
-	private static int numHumanos = 1;
+	private static int numHumanos;
 	private int numCPUs  = 0;
 	private int botonWidth = 45;
 	private int medioX = (ConstsGUI.FRAMEWIDTH/2)-(this.botonWidth/2);
@@ -368,6 +373,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 	MenuElegirCantidadJugadores() {
 		this.setLayout(null);
 		this.setBackground(Color.PINK);
+		numHumanos = 1;
 		
 		this.addContadorHumanos();
 		this.addContadorCPUs();
@@ -483,5 +489,300 @@ class MenuElegirCantidadJugadores extends JPanel {
 		}
 		g.drawString(String.valueOf(this.numCPUs), this.medioX+(this.botonWidth/2), 215);
 		g.setColor(Color.BLACK);
+	}
+}
+
+@SuppressWarnings("serial")
+class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
+	
+	private int numHumanos;
+	private TerminarPartida botonSalir = new TerminarPartida();
+	
+	MenuAnyadirJugadorPartida() {
+		this.setBackground(Color.PINK);
+		super.setNombreGetText("Seleccionar jugador");
+
+		this.numHumanos = MenuElegirCantidadJugadores.getNumHumanos();
+		
+		this.esMasFacilHacerEsteMetodoQueArreglarLaHerencia();
+		
+		this.add(botonSalir);
+		
+		
+	}
+	
+	//Este metodo elimina un boton que hereda del padre y que causa problemas en este caso, podría arreglarlo pero no me apetece y tampoco me da tiempo :)
+	private void esMasFacilHacerEsteMetodoQueArreglarLaHerencia() {
+		for (Component i : this.getComponents()) {
+			if (i instanceof JButton  && ((JButton)i).getText().equals("Volver")) {
+				this.remove(i);
+			}
+		}
+	}
+
+	@Override
+	protected ActionListener setListenerGetText() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String nombre = getInText().getText();
+				
+				if (nombre.toUpperCase().matches("CPU\\d*")) {
+					JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.MENU_ADD_JUGADOR_ERROR);
+					Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_ADD_JUGADOR_ERROR);
+					
+				} else if (verificarExistenciaJugador(nombre)) {
+					addJugadorPartida(nombre);
+				}
+			}
+		};
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawString("Jugadores a añadir restantes: " + String.valueOf(this.numHumanos), 110, 280);
+	}
+	
+	private boolean verificarExistenciaJugador(String nombre) {
+		if (Gestor.jugadores.existsJugador(nombre)) {
+			return true;
+			
+		} else {
+			int opcion = JOptionPane.showOptionDialog(MenuAnyadirJugadorPartida.this, Consts.MENU_ADD_JUGADOR_INEXISTENTE(nombre), null, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Y", "N"}, "Y");
+			
+			if (opcion == 0) {
+				return Gestor.jugadores.crearJugador(nombre);
+				
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	private void addJugadorPartida(String nombre) {
+		if (Gestor.partida.addPersona(nombre)) {
+			JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.MENU_SUCCEED);
+			
+			this.numHumanos--;
+			MenuAnyadirJugadorPartida.this.repaint();
+
+			if (this.numHumanos == 0) {
+				JuegoGUI.visuales.mostrarPregunta(Gestor.partida.nextPregunta());
+			}
+			
+		} else {
+			JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.ERROR_JUGADOR_REPETIDO);
+			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_JUGADOR_REPETIDO);
+		}
+
+	}
+}
+
+@SuppressWarnings("serial")
+class MenuPreguntaMateLetras extends MenuModificarJugador {
+	private Pregunta pregunta;
+	private Jugador jugador;
+	private TerminarPartida salir = new TerminarPartida();
+	private MostradorTexto enunciado;
+	
+	public MenuPreguntaMateLetras(Pregunta pregunta) {
+		this.setBackground(Color.PINK);
+		super.setNombreGetText("Responder");
+		
+		this.pregunta = pregunta;
+		this.enunciado = new MostradorTexto(pregunta.getEnunciado());
+		this.enunciado.setBounds(110, 200, 420, 20);
+		
+		this.jugador = Gestor.partida.nextJugador();
+		
+		this.esMasFacilHacerEsteMetodoQueArreglarLaHerencia();
+		
+		this.add(salir);
+		this.add(enunciado);
+
+		this.repaint();
+	}
+	
+	public void isCPUJugando() {
+		if (jugador instanceof Cpu) {
+			JuegoGUI.visuales.mostrarFinPregunta(jugador, ((Cpu)jugador).generarRespuesta(pregunta), pregunta);
+		}
+	}
+
+	@Override
+	protected ActionListener setListenerGetText() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JuegoGUI.visuales.mostrarFinPregunta(jugador, getInText().getText(), pregunta);
+			}
+		};
+	}
+	
+	private void esMasFacilHacerEsteMetodoQueArreglarLaHerencia() {
+		for (Component i : this.getComponents()) {
+			if (i instanceof JButton  && ((JButton)i).getText().equals("Volver")) {
+				this.remove(i);
+			}
+		}
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawString("Turno de " + jugador.getNombre(), 110, 280);
+		
+		g.drawString("Ronda " + String.valueOf(Gestor.partida.getRondaX()), 110, 260);
+	}
+}
+
+@SuppressWarnings("serial")
+class MenuPreguntaIngles extends MenuSeleccion {
+	private Pregunta pregunta;
+	private Jugador jugador;
+	private TerminarPartida salir = new TerminarPartida();
+	private MostradorTexto enunciado;
+
+	protected MenuPreguntaIngles(Pregunta pregunta) {
+		super(Consts.TOTAL_OPCIONES_INGLES);
+
+		this.setBackground(Color.PINK);
+		
+		this.pregunta = pregunta;
+		ArrayList<String> socorro = ((Ingles)this.pregunta).getOpciones();
+		String[] opciones = {socorro.get(0), socorro.get(1), socorro.get(2), socorro.get(3)};
+		super.anyadirNombres(opciones);
+		
+		this.enunciado = new MostradorTexto(pregunta.getEnunciado());
+		this.enunciado.setBounds(110, 100, 420, 40);
+		
+		this.jugador = Gestor.partida.nextJugador();
+		
+		JButton[] botones = super.getBotones();
+		
+		botones[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JuegoGUI.visuales.mostrarFinPregunta(jugador, botones[0].getText(), pregunta);
+			}
+		});
+		botones[0].setToolTipText(opciones[0]);
+		
+		botones[1].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JuegoGUI.visuales.mostrarFinPregunta(jugador, botones[1].getText(), pregunta);
+			}
+		});
+		botones[1].setToolTipText(opciones[1]);
+		
+		botones[2].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JuegoGUI.visuales.mostrarFinPregunta(jugador, botones[2].getText(), pregunta);
+			}
+		});
+		botones[2].setToolTipText(opciones[2]);
+		
+		botones[3].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JuegoGUI.visuales.mostrarFinPregunta(jugador, botones[3].getText(), pregunta);
+			}
+		});
+		botones[3].setToolTipText(opciones[3]);
+		
+		this.add(salir);
+		this.add(enunciado);
+		
+		this.repaint();
+	}
+	
+	public void isCPUJugando() {
+		if (jugador instanceof Cpu) {
+			JuegoGUI.visuales.mostrarFinPregunta(jugador, ((Cpu)jugador).generarRespuesta(pregunta), pregunta);
+		}
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawString("Turno de " + jugador.getNombre(), 110, 90);
+		
+		g.drawString("Ronda: " + String.valueOf(Gestor.partida.getRondaX()), 110, 70);
+	}
+}
+
+@SuppressWarnings("serial")
+class MenuFinPregunta extends JPanel {
+	
+	private Jugador jugador;
+	private String respuesta;
+	private Pregunta pregunta;
+	private String mensaje;
+	
+	public MenuFinPregunta(Jugador jugador, String respuesta, Pregunta pregunta) {
+		this.setBackground(Color.PINK);
+
+		this.jugador = jugador;
+		this.respuesta = respuesta;
+		this.pregunta = pregunta;
+
+		this.mensaje = this.generarMensaje();
+	}
+	
+	public String getMensaje() {
+		return this.mensaje;
+	}
+	
+	public void continuar() {
+		if (Gestor.partida.isTerminada()) {
+			JuegoGUI.visuales.mostrarFinPartida();
+		
+		} else {
+			JuegoGUI.visuales.mostrarPregunta(Gestor.partida.nextPregunta());
+		}
+	}
+	
+	private String generarMensaje() {
+		String mensaje = "";
+		
+		mensaje += "Ronda: " + Gestor.partida.getRondaX() + "\n";
+		mensaje += "Jugador: " + jugador.getNombre() + "\n";
+		
+		if (jugador.responder(respuesta, pregunta)) {
+			mensaje += Consts.PREGUNTA_ACERTADA;
+		
+		} else {
+			mensaje += "Solución: " + this.pregunta.getSolucion() + "\n";
+			mensaje += Consts.PREGUNTA_FALLADA;
+		}
+		
+		return mensaje;
+	}
+}
+
+@SuppressWarnings("serial")
+class MenuFinPartida extends JPanel {
+
+	protected MenuFinPartida() {
+		this.setLayout(null);
+		this.setBackground(Color.PINK);
+		
+		MostradorTexto enunciado = new MostradorTexto(Gestor.partida.getPuntuaciones());
+		enunciado.setBounds(110, 200, 420, 20);
+		
+		this.add(new TerminarPartida());
+		this.add(enunciado);
+		
+		Gestor.historial.escribir(Gestor.partida.getPuntuaciones());
+		
+		for (String i : Gestor.partida.getGanador()) {
+			Gestor.jugadores.partidaGanada(i);
+		}
+		Gestor.jugadores.actualizarRanking();
+		
+		Gestor.log.escribirArchivo(Consts.LOG_FIN_PARTIDA(Gestor.partida.getNumJugadores(), Gestor.partida.getGanador()));
 	}
 }

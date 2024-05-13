@@ -7,7 +7,7 @@ public class JuegoGUI extends JFrame {
 	
 	static VisualesGUI visuales;
 	
-	public JuegoGUI() throws InterruptedException {
+	public JuegoGUI() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(ConstsGUI.FRAMEWIDTH, ConstsGUI.FRAMEHEIGHT);
@@ -19,5 +19,4 @@ public class JuegoGUI extends JFrame {
 		JuegoGUI.visuales = new VisualesGUI(this);
 		JuegoGUI.visuales.mostrarPrincipal();
 	}
-	
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import preguntas.Ingles;
 import preguntas.Letras;
 import preguntas.Mates;
+import preguntas.Pregunta;
 
 public class Consts {
 	public static final String[] TIPOS_PREGUNTAS = {Mates.class.getSimpleName(), Letras.class.getSimpleName(), Ingles.class.getSimpleName()};
@@ -20,6 +21,13 @@ public class Consts {
 	public static final Path PATH_LOG = Paths.get("./file/salida.log");
 	public static Path PATH_MOVER_LOG(String fechaArchivo) {
 		return Paths.get("./historico/salida.log"+"."+fechaArchivo);
+	}
+	
+	public static final String PREGUNTA_ACERTADA = "¡Pregunta acertada! +1 punto";
+	public static final String PREGUNTA_FALLADA = "Pregunta fallada";
+	public static final String PREGUNTA_FALLADA(Pregunta pregunta) {
+		return Consts.PREGUNTA_FALLADA + "\n"
+				 + "Respuesta correcta: " + pregunta.getSolucion();
 	}
 	
 	public static final String ERROR_CREAR_PREGUNTA = "ERROR: no se pudo crear una pregunta de tipo letras/ingles, se creará una de tipo Mates";
