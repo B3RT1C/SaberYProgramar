@@ -2,6 +2,7 @@ package main.GUI;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -186,6 +187,13 @@ class MenuPrincipal extends MenuSeleccion {
 			}
 		});
 	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Saber Y Programar", 230, 100);
+	}
 }
 
 @SuppressWarnings("serial")
@@ -249,6 +257,13 @@ class MenuGestionJugadores extends MenuSeleccion {
 			}
 		});
 	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Gestión de jugadores", 215, 100);
+	}
 }
 
 @SuppressWarnings("serial")
@@ -275,6 +290,13 @@ class MenuAnyadirJugador extends MenuModificarJugador {
 			}
 		};
 	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Añadir jugador", 250, 100);
+	}
 }
 
 @SuppressWarnings("serial")
@@ -300,6 +322,13 @@ class MenuEliminarJugador extends MenuModificarJugador {
 				}
 			}
 		};
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Eliminar jugador", 245, 100);
 	}
 }
 
@@ -357,6 +386,13 @@ class MenuElegirRondas extends MenuSeleccion {
 	private void establecerNumeroRondasYMostrarElegirCantidadJugadores(int numRondas) {
 		MenuElegirRondas.numRondas = numRondas;
 		JuegoGUI.visuales.mostrarElegirCantidadJugadores();
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Seleccionar ronda", 230, 100);
 	}
 }
 
@@ -489,6 +525,9 @@ class MenuElegirCantidadJugadores extends JPanel {
 		}
 		g.drawString(String.valueOf(this.numCPUs), this.medioX+(this.botonWidth/2), 215);
 		g.setColor(Color.BLACK);
+	
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Elegir número de jugadores", 195, 100);
 	}
 }
 
@@ -538,12 +577,6 @@ class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
 		};
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.drawString("Jugadores a añadir restantes: " + String.valueOf(this.numHumanos), 110, 280);
-	}
-	
 	private boolean verificarExistenciaJugador(String nombre) {
 		if (Gestor.jugadores.existsJugador(nombre)) {
 			return true;
@@ -575,7 +608,15 @@ class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
 			JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.ERROR_JUGADOR_REPETIDO);
 			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_JUGADOR_REPETIDO);
 		}
-
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawString("Jugadores a añadir restantes: " + String.valueOf(this.numHumanos), 110, 280);
+			
+		g.setFont(new Font(null, Font.BOLD, 20));			
+		g.drawString("Seleccionar jugador", 230, 100);
 	}
 }
 
@@ -633,7 +674,8 @@ class MenuPreguntaMateLetras extends MenuModificarJugador {
 		super.paintComponent(g);
 		g.drawString("Turno de " + jugador.getNombre(), 110, 280);
 		
-		g.drawString("Ronda " + String.valueOf(Gestor.partida.getRondaX()), 110, 260);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Responder pregunta", 230, 100);
 	}
 }
 
@@ -709,14 +751,14 @@ class MenuPreguntaIngles extends MenuSeleccion {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawString("Turno de " + jugador.getNombre(), 110, 90);
-		
-		g.drawString("Ronda: " + String.valueOf(Gestor.partida.getRondaX()), 110, 70);
+
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Responder pregunta", 230, 50);
 	}
 }
 
 @SuppressWarnings("serial")
 class MenuFinPregunta extends JPanel {
-	
 	private Jugador jugador;
 	private String respuesta;
 	private Pregunta pregunta;
@@ -748,7 +790,6 @@ class MenuFinPregunta extends JPanel {
 	private String generarMensaje() {
 		String mensaje = "";
 		
-		mensaje += "Ronda: " + Gestor.partida.getRondaX() + "\n";
 		mensaje += "Jugador: " + jugador.getNombre() + "\n";
 		
 		if (jugador.responder(respuesta, pregunta)) {
@@ -765,8 +806,7 @@ class MenuFinPregunta extends JPanel {
 
 @SuppressWarnings("serial")
 class MenuFinPartida extends JPanel {
-
-	protected MenuFinPartida() {
+	MenuFinPartida() {
 		this.setLayout(null);
 		this.setBackground(Color.PINK);
 		
@@ -778,11 +818,18 @@ class MenuFinPartida extends JPanel {
 		
 		Gestor.historial.escribir(Gestor.partida.getPuntuaciones());
 		
-		for (String i : Gestor.partida.getGanador()) {
-			Gestor.jugadores.partidaGanada(i);
+		for (Jugador i : Gestor.partida.getJugadores()) {
+			Gestor.jugadores.actualizarPuntosRanking(i.getNombre(), i.getPuntosPartida());;
 		}
 		Gestor.jugadores.actualizarRanking();
 		
 		Gestor.log.escribirArchivo(Consts.LOG_FIN_PARTIDA(Gestor.partida.getNumJugadores(), Gestor.partida.getGanador()));
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setFont(new Font(null, Font.BOLD, 20));
+		g.drawString("Resultados finales", 230, 100);
 	}
 }

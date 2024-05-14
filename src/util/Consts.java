@@ -23,6 +23,10 @@ public class Consts {
 		return Paths.get("./historico/salida.log"+"."+fechaArchivo);
 	}
 	
+	public static final String COMPARAR_POR_DIA = "dd";
+	public static final String COMPARAR_POR_MES = "MM";
+	public static final String COMPARAR_POR_ANYO = "yyyy";
+	
 	public static final String PREGUNTA_ACERTADA = "¡Pregunta acertada! +1 punto";
 	public static final String PREGUNTA_FALLADA = "Pregunta fallada";
 	public static final String PREGUNTA_FALLADA(Pregunta pregunta) {

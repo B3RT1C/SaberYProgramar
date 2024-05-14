@@ -1,56 +1,7 @@
-[13/05/2024][00:42:45]: Se ha añadido el jugador: YAPPING
-[13/05/2024][00:42:55]: ERROR. Se ha producido un error en la aplicación: ERROR: jugador ya existente en la partida, introduce otro jugador
-[13/05/2024][00:43:11]: ERROR. Se ha producido un error en la aplicación: ERROR: jugador ya existente en la partida, introduce otro jugador
-[13/05/2024][00:43:15]: Se ha añadido el jugador: PEPE
-[13/05/2024][01:05:10]: ERROR. Se ha producido un error en la aplicación: ERROR: jugador ya existente en la partida, introduce otro jugador
-[13/05/2024][01:31:02]: ERROR. Se ha producido un error en la aplicación: ERROR: jugador ya existente en la partida, introduce otro jugador
-[13/05/2024][10:59:25]: Inicio de partida con 0 jugadores humanos, 2 jugadores CPU
-[13/05/2024][11:00:20]: Inicio de partida con 0 jugadores humanos, 2 jugadores CPU
-[13/05/2024][11:00:44]: Fin partida con 2 jugador/es. Ha sido empate. Ganadores: CPU2, CPU1
-[13/05/2024][11:51:06]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][11:51:09]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][11:51:09]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][11:51:09]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][11:51:10]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][11:51:10]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][11:53:33]: Se ha añadido el jugador: ALBERTOMAGNO
-[13/05/2024][11:53:50]: Se ha eliminado el jugador: ALBERTOMAGNO
-[13/05/2024][12:03:55]: Inicio de partida con 0 jugadores humanos, 2 jugadores CPU
-[13/05/2024][12:04:20]: Fin partida con 2 jugador/es. Ha sido empate. Ganadores: CPU2, CPU1
-[13/05/2024][12:36:28]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][12:36:40]: Inicio de partida con 0 jugadores humanos, 1 jugadores CPU
-[13/05/2024][12:37:01]: Fin partida con 2 jugador/es. Ganador: CPU1
-[13/05/2024][13:35:32]: Se ha añadido el jugador: LOLITA
-[13/05/2024][13:39:38]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][13:39:45]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][13:39:47]: Se ha añadido el jugador: JUAN2
-[13/05/2024][13:44:42]: Se ha eliminado el jugador: JUAN2
-[13/05/2024][13:46:49]: Se ha eliminado el jugador: LOLITA
-[13/05/2024][13:46:58]: Se ha añadido el jugador: LOLITA
-[13/05/2024][13:47:02]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][13:47:35]: Se ha añadido el jugador: 5
-[13/05/2024][13:47:45]: Se ha añadido el jugador: MANOLO
-[13/05/2024][13:47:54]: Se ha eliminado el jugador: MANOLO
-[13/05/2024][13:49:39]: Se ha añadido el jugador: CPUA
-[13/05/2024][13:50:21]: Fin partida con 2 jugador/es. No hubo ganador/es
-[13/05/2024][13:52:46]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][13:58:46]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][14:00:52]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][14:00:58]: Se ha eliminado el jugador: 5
-[13/05/2024][14:01:06]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][14:01:13]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][14:01:20]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][14:01:23]: Se ha eliminado el jugador: CPUA
-[13/05/2024][14:03:01]: ERROR. Se ha producido un error en la aplicación: El nombre del jugador que has introducido no es válido
-[13/05/2024][14:04:34]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
-[13/05/2024][14:04:37]: Inicio de partida con 0 jugadores humanos, 2 jugadores CPU
-[13/05/2024][14:05:22]: Fin partida con 3 jugador/es. Ganador: CPU2
-[13/05/2024][14:06:01]: Inicio de partida con 0 jugadores humanos, 2 jugadores CPU
-[13/05/2024][14:06:25]: Fin partida con 2 jugador/es. No hubo ganador/es
-[13/05/2024][14:07:34]: Fin partida con 2 jugador/es. Ha sido empate. Ganadores: CPU2, CPU1
-[13/05/2024][14:08:11]: Fin partida con 4 jugador/es. Ha sido empate. Ganadores: CPU3, CPU1
-[13/05/2024][14:08:21]: Fin partida con 1 jugador/es. Ganador: CPU1
-[13/05/2024][14:21:11]: Fin partida con 2 jugador/es. Ganador: CPU2
-[13/05/2024][14:22:16]: Fin partida con 1 jugador/es. No hubo ganador/es
-[13/05/2024][14:23:33]: Fin partida con 2 jugador/es. Ha sido empate. Ganadores: CPU1, CPU2
-[13/05/2024][14:23:51]: Fin partida con 3 jugador/es. Ha sido empate. Ganadores: CPU1, CPU2
+[14/05/2024][20:40:53]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
+[14/05/2024][20:40:54]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
+[14/05/2024][20:40:54]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
+[14/05/2024][20:40:54]: ERROR. Se ha producido un error en la aplicación: ERROR: opción no válida, introduce otro valor
+[14/05/2024][20:41:12]: Inicio de partida con 0 jugadores humanos, 2 jugadores CPU
+[14/05/2024][20:41:37]: Fin partida con 2 jugador/es. No hubo ganador/es
+[14/05/2024][21:13:45]: Fin partida con 2 jugador/es. Ganador: CPU2

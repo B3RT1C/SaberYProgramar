@@ -13,10 +13,7 @@ public class Partida {
 	private ArrayList<Pregunta> preguntas = new ArrayList<>();
 	
 	private int numJugadores;
-	private int numRondas;
 	private boolean jugadoresMezclados = false;
-	
-	private static int rondaX;
 	
 	protected Partida() {}
 	
@@ -24,7 +21,6 @@ public class Partida {
 	public void configurar(int numJugadores, int numRondas) {
 		this.reiniciarPartida();
 		this.numJugadores = numJugadores;
-		this.numRondas = numJugadores;
 		this.generarPreguntas(numJugadores*numRondas);
 	}
 	
@@ -32,7 +28,6 @@ public class Partida {
 		this.jugadores.clear();
 		this.preguntas.clear();
 		this.ganadores.clear();
-		rondaX = 1;
 	}
 	
 	private void generarPreguntas(int numPreguntas) {
@@ -45,14 +40,8 @@ public class Partida {
 		return this.numJugadores;
 	}
 	
-//	public ArrayList<Jugador> getJugadores() {
-//		return this.jugadores;
-//	}
-	
-	public int getRondaX() {
-//		return this.numRondas-(this.preguntas.size()/this.numJugadores)+1;
-		rondaX++;
-		return rondaX%
+	public ArrayList<Jugador> getJugadores() {
+		return jugadores;
 	}
 	
 	private boolean addJugador(Jugador jugador) {

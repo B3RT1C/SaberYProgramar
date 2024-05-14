@@ -211,8 +211,6 @@ public class JuegoConsola {
 			Jugador jugador = Gestor.partida.nextJugador();
 			Pregunta pregunta = Gestor.partida.nextPregunta();
 			
-			System.out.println("\nRonda " + Gestor.partida.getRondaX());
-			
 			System.out.println("\nTurno de " + jugador.getNombre());
 			this.visuales.mostrarPregunta(pregunta);
 
@@ -236,8 +234,8 @@ public class JuegoConsola {
 	private void partidaCloseup() {
 		Gestor.historial.escribir(Gestor.partida.getPuntuaciones());
 		
-		for (String i : Gestor.partida.getGanador()) {
-			Gestor.jugadores.partidaGanada(i);
+		for (Jugador i : Gestor.partida.getJugadores()) {
+			Gestor.jugadores.actualizarPuntosRanking(i.getNombre(), i.getPuntosPartida());
 		}
 		Gestor.jugadores.actualizarRanking();
 		

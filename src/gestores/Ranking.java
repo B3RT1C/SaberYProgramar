@@ -83,12 +83,12 @@ public class Ranking {
 		return this.nombreJugadores.contains(nombre);
 	}
 	
-	public void partidaGanada(String nombre) {
+	public void actualizarPuntosRanking(String nombre, int puntuacion) {
 		//Evita a las cpus en caso de que ganen la partida
 		if (this.existsJugador(nombre)) {
 			int index = this.findIndiceJugador(nombre);
 			int partidasGanadas = this.partidasGanadasJugadores.get(index);
-			this.partidasGanadasJugadores.set(index, partidasGanadas+1);
+			this.partidasGanadasJugadores.set(index, partidasGanadas+puntuacion);
 		}
 	}
 	

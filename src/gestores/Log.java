@@ -56,7 +56,9 @@ public class Log {
 	}
 	
 	private void veificarLogHoy() {
-		if (!this.getFecha().equals(this.fechaLog) && this.fechaLog != null) {
+//		if (!this.getFecha().equals(this.fechaLog) && this.fechaLog != null) {
+
+		if (!(this.isMismaFecha(Consts.COMPARAR_POR_DIA)) && this.fechaLog != null) {
 			String[] fecha = this.fechaLog.split("/");
 			try {
 				Files.move(Consts.PATH_LOG, Consts.PATH_MOVER_LOG(fecha[2]+fecha[1]+fecha[0]));
@@ -66,6 +68,14 @@ public class Log {
 				System.out.println(Consts.ERROR_MOVER_ARCHIVO);
 			}
 		}
+	}
+	
+	private boolean isMismaFecha(String comparador) {
+		return (LocalDate.parse(this.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy")).
+				format(DateTimeFormatter.ofPattern(comparador)).
+					matches(
+							LocalDate.parse(this.fechaLog, DateTimeFormatter.ofPattern("dd/MM/yyyy")).
+							format(DateTimeFormatter.ofPattern(comparador))));
 	}
 
 	public void escribirArchivo(String linea) {
