@@ -24,14 +24,14 @@ import util.Consts;
  * Como quiero tener todas las clases de GUI en un paquete para facilitar la correción me he visto con demasiadas clases en el paquete GUI
  * a si que las he metido todas en el mismo archio y así poder almenos ver claramente que otras clases tengo en el paquete GUI
  */
-
+public class Menus {
 @SuppressWarnings("serial")
-abstract class MenuSeleccion extends JPanel {
+abstract class Seleccion extends JPanel {
 	private JButton[] botones;
 	
 	private int medioY;
 	
-	protected MenuSeleccion(int numBotones) {
+	protected Seleccion(int numBotones) {
 		this.setLayout(null);
 		this.botones = new JButton[numBotones];
 		
@@ -66,11 +66,11 @@ abstract class MenuSeleccion extends JPanel {
 }
 
 @SuppressWarnings("serial")
-abstract class MenuMostrarTexto extends JPanel {
+abstract class MostrarTexto extends JPanel {
 	private MostradorTexto texto;
 	private JButton volver = new JButton("Volver");
 	
-	protected MenuMostrarTexto(ArrayList<String> texto) {
+	protected MostrarTexto(ArrayList<String> texto) {
 		this.setLayout(null);
 		
 		this.configurarMostradorTexto(texto);
@@ -98,12 +98,12 @@ abstract class MenuMostrarTexto extends JPanel {
 }
 
 @SuppressWarnings("serial")
-abstract class MenuModificarJugador extends JPanel {
+abstract class ImputJugador extends JPanel {
 	private JTextField inText;
 	private JButton getText = new JButton();
 	private JButton volver = new JButton("Volver");
 	
-	protected MenuModificarJugador() {
+	protected ImputJugador() {
 		this.setLayout(null);
 		
 		this.configurarComponentes();
@@ -141,8 +141,8 @@ abstract class MenuModificarJugador extends JPanel {
 }
 
 @SuppressWarnings("serial")
-class MenuPrincipal extends MenuSeleccion {
-	MenuPrincipal() {
+class Principal extends Seleccion {
+	Principal() {
 		super(5);
 				
 		this.setBackground(Color.CYAN);
@@ -197,32 +197,32 @@ class MenuPrincipal extends MenuSeleccion {
 }
 
 @SuppressWarnings("serial")
-class MenuMostrarRanking extends MenuMostrarTexto {
-	MenuMostrarRanking() {
+class MostrarRanking extends MostrarTexto {
+	MostrarRanking() {
 		super(Gestor.jugadores.getRanking());
 		this.setBackground(Color.MAGENTA);
 	}
 }
 
 @SuppressWarnings("serial")
-class MenuMostrarJugadores extends MenuMostrarTexto {
-	MenuMostrarJugadores() {
+class MostrarJugadores extends MostrarTexto {
+	MostrarJugadores() {
 		super(Gestor.jugadores.getNombres());
 		this.setBackground(Color.GREEN);
 	}
 }
 
 @SuppressWarnings("serial")
-class MenuMostrarHistorico extends MenuMostrarTexto {
-	MenuMostrarHistorico() {
+class MostrarHistorico extends MostrarTexto {
+	MostrarHistorico() {
 		super(Gestor.historial.getHistorial());
 		this.setBackground(Color.ORANGE);
 	}
 }
 
 @SuppressWarnings("serial")
-class MenuGestionJugadores extends MenuSeleccion {
-	MenuGestionJugadores() {
+class GestionJugadores extends Seleccion {
+	GestionJugadores() {
 		super(4);
 		
 		this.setBackground(Color.GREEN);
@@ -267,8 +267,8 @@ class MenuGestionJugadores extends MenuSeleccion {
 }
 
 @SuppressWarnings("serial")
-class MenuAnyadirJugador extends MenuModificarJugador {
-	MenuAnyadirJugador() {
+class AnyadirJugador extends ImputJugador {
+	AnyadirJugador() {
 		super.setNombreGetText("Añadir jugador");
 		this.setBackground(Color.GREEN);
 	}
@@ -280,11 +280,11 @@ class MenuAnyadirJugador extends MenuModificarJugador {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = getInText().getText();
 				if (Gestor.jugadores.crearJugador(nombre)) {
-					JOptionPane.showMessageDialog(MenuAnyadirJugador.this, Consts.MENU_SUCCEED);
+					JOptionPane.showMessageDialog(AnyadirJugador.this, Consts.MENU_SUCCEED);
 					JuegoGUI.visuales.volver();
 					
 				} else {
-					JOptionPane.showMessageDialog(MenuAnyadirJugador.this, Consts.MENU_ADD_JUGADOR_ERROR);
+					JOptionPane.showMessageDialog(AnyadirJugador.this, Consts.MENU_ADD_JUGADOR_ERROR);
 					Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_ADD_JUGADOR_ERROR);
 				}
 			}
@@ -300,8 +300,8 @@ class MenuAnyadirJugador extends MenuModificarJugador {
 }
 
 @SuppressWarnings("serial")
-class MenuEliminarJugador extends MenuModificarJugador {
-	MenuEliminarJugador() {
+class EliminarJugador extends ImputJugador {
+	EliminarJugador() {
 		super.setNombreGetText("Eliminar jugador");
 		this.setBackground(Color.GREEN);
 	}
@@ -313,11 +313,11 @@ class MenuEliminarJugador extends MenuModificarJugador {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = getInText().getText();
 				if (Gestor.jugadores.removeJugador(nombre)) {
-					JOptionPane.showMessageDialog(MenuEliminarJugador.this, Consts.MENU_SUCCEED);
+					JOptionPane.showMessageDialog(EliminarJugador.this, Consts.MENU_SUCCEED);
 					JuegoGUI.visuales.volver();
 					
 				} else {
-					JOptionPane.showMessageDialog(MenuEliminarJugador.this, Consts.MENU_REMOVE_JUGADOR_ERROR);
+					JOptionPane.showMessageDialog(EliminarJugador.this, Consts.MENU_REMOVE_JUGADOR_ERROR);
 					Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_ADD_JUGADOR_ERROR);
 				}
 			}
@@ -333,13 +333,13 @@ class MenuEliminarJugador extends MenuModificarJugador {
 }
 
 @SuppressWarnings("serial")
-class MenuElegirRondas extends MenuSeleccion {
+class ElegirRondas extends Seleccion {
 	
 	private static int numRondas;
 
 	private TerminarPartida botonSalir = new TerminarPartida();
 	
-	public MenuElegirRondas() {
+	ElegirRondas() {
 		super(4);
 		super.anyadirNombres(new String[]{"Partida rápida: 3 rondas", "Partida corta: 5 rondas", "Partida normal: 10 rondas", "Partida larga: 20 rondas"});
 		
@@ -379,12 +379,12 @@ class MenuElegirRondas extends MenuSeleccion {
 		this.add(this.botonSalir);
 	}
 	
-	public static int getNumRondas() {
+	static int getNumRondas() {
 		return numRondas;
 	}
 	
 	private void establecerNumeroRondasYMostrarElegirCantidadJugadores(int numRondas) {
-		MenuElegirRondas.numRondas = numRondas;
+		ElegirRondas.numRondas = numRondas;
 		JuegoGUI.visuales.mostrarElegirCantidadJugadores();
 	}
 	
@@ -397,7 +397,7 @@ class MenuElegirRondas extends MenuSeleccion {
 }
 
 @SuppressWarnings("serial")
-class MenuElegirCantidadJugadores extends JPanel {
+class ElegirCantidadJugadores extends JPanel {
 	//No se pueden elegir 0 jugadores para una partida, si hay 1 jugador de humanos/cpus y 0 del otro, el que vale 1 no podrá ver si valor reducido para que no existan 0 jugadores en la partida
 	private static int numHumanos;
 	private int numCPUs  = 0;
@@ -406,7 +406,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 	private JButton getInfoJugadores = new JButton("Aceptar");
 	private TerminarPartida botonSalir = new TerminarPartida();
 	
-	MenuElegirCantidadJugadores() {
+	ElegirCantidadJugadores() {
 		this.setLayout(null);
 		this.setBackground(Color.PINK);
 		numHumanos = 1;
@@ -418,7 +418,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 		this.getInfoJugadores.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					Gestor.partida.configurar(numHumanos+numCPUs, MenuElegirRondas.getNumRondas());
+					Gestor.partida.configurar(numHumanos+numCPUs, ElegirRondas.getNumRondas());
 					
 					for (int i = 0; i < numCPUs; i++) {
 						Gestor.partida.addCPU();
@@ -436,8 +436,8 @@ class MenuElegirCantidadJugadores extends JPanel {
 		this.add(botonSalir);
 	}
 	
-	public static int getNumHumanos() {
-		return MenuElegirCantidadJugadores.numHumanos;
+	static int getNumHumanos() {
+		return ElegirCantidadJugadores.numHumanos;
 	}
 	
 	private void addContadorHumanos() {
@@ -452,7 +452,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 					numHumanos--;
 				}
 				
-				MenuElegirCantidadJugadores.this.repaint();
+				ElegirCantidadJugadores.this.repaint();
 			}
 		});
 		
@@ -465,7 +465,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 					numHumanos++;
 				}
 				
-				MenuElegirCantidadJugadores.this.repaint();
+				ElegirCantidadJugadores.this.repaint();
 			}
 		});
 		
@@ -485,7 +485,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 					numCPUs--;
 				}
 				
-				MenuElegirCantidadJugadores.this.repaint();
+				ElegirCantidadJugadores.this.repaint();
 			}
 		});
 		
@@ -498,7 +498,7 @@ class MenuElegirCantidadJugadores extends JPanel {
 					numCPUs++;
 				}
 				
-				MenuElegirCantidadJugadores.this.repaint();
+				ElegirCantidadJugadores.this.repaint();
 			}
 		});
 		
@@ -532,16 +532,16 @@ class MenuElegirCantidadJugadores extends JPanel {
 }
 
 @SuppressWarnings("serial")
-class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
+class AnyadirJugadorPartida extends ImputJugador  {
 	
 	private int numHumanos;
 	private TerminarPartida botonSalir = new TerminarPartida();
 	
-	MenuAnyadirJugadorPartida() {
+	AnyadirJugadorPartida() {
 		this.setBackground(Color.PINK);
 		super.setNombreGetText("Seleccionar jugador");
 
-		this.numHumanos = MenuElegirCantidadJugadores.getNumHumanos();
+		this.numHumanos = ElegirCantidadJugadores.getNumHumanos();
 		
 		this.esMasFacilHacerEsteMetodoQueArreglarLaHerencia();
 		
@@ -567,7 +567,7 @@ class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
 				String nombre = getInText().getText();
 				
 				if (nombre.toUpperCase().matches("CPU\\d*")) {
-					JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.MENU_ADD_JUGADOR_ERROR);
+					JOptionPane.showMessageDialog(AnyadirJugadorPartida.this, Consts.MENU_ADD_JUGADOR_ERROR);
 					Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.MENU_ADD_JUGADOR_ERROR);
 					
 				} else if (verificarExistenciaJugador(nombre)) {
@@ -582,7 +582,7 @@ class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
 			return true;
 			
 		} else {
-			int opcion = JOptionPane.showOptionDialog(MenuAnyadirJugadorPartida.this, Consts.MENU_ADD_JUGADOR_INEXISTENTE(nombre), null, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Y", "N"}, "Y");
+			int opcion = JOptionPane.showOptionDialog(AnyadirJugadorPartida.this, Consts.MENU_ADD_JUGADOR_INEXISTENTE(nombre), null, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Y", "N"}, "Y");
 			
 			if (opcion == 0) {
 				return Gestor.jugadores.crearJugador(nombre);
@@ -595,17 +595,17 @@ class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
 	
 	private void addJugadorPartida(String nombre) {
 		if (Gestor.partida.addPersona(nombre)) {
-			JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.MENU_SUCCEED);
+			JOptionPane.showMessageDialog(AnyadirJugadorPartida.this, Consts.MENU_SUCCEED);
 			
 			this.numHumanos--;
-			MenuAnyadirJugadorPartida.this.repaint();
+			AnyadirJugadorPartida.this.repaint();
 
 			if (this.numHumanos == 0) {
 				JuegoGUI.visuales.mostrarPregunta(Gestor.partida.nextPregunta());
 			}
 			
 		} else {
-			JOptionPane.showMessageDialog(MenuAnyadirJugadorPartida.this, Consts.ERROR_JUGADOR_REPETIDO);
+			JOptionPane.showMessageDialog(AnyadirJugadorPartida.this, Consts.ERROR_JUGADOR_REPETIDO);
 			Gestor.log.escribirArchivo(Consts.LOG_ERROR + Consts.ERROR_JUGADOR_REPETIDO);
 		}
 	}
@@ -621,13 +621,13 @@ class MenuAnyadirJugadorPartida extends MenuModificarJugador  {
 }
 
 @SuppressWarnings("serial")
-class MenuPreguntaMateLetras extends MenuModificarJugador {
+class PreguntaMateLetras extends ImputJugador {
 	private Pregunta pregunta;
 	private Jugador jugador;
 	private TerminarPartida salir = new TerminarPartida();
 	private MostradorTexto enunciado;
 	
-	public MenuPreguntaMateLetras(Pregunta pregunta) {
+	PreguntaMateLetras(Pregunta pregunta) {
 		this.setBackground(Color.PINK);
 		super.setNombreGetText("Responder");
 		
@@ -645,7 +645,7 @@ class MenuPreguntaMateLetras extends MenuModificarJugador {
 		this.repaint();
 	}
 	
-	public void isCPUJugando() {
+	void isCPUJugando() {
 		if (jugador instanceof Cpu) {
 			JuegoGUI.visuales.mostrarFinPregunta(jugador, ((Cpu)jugador).generarRespuesta(pregunta), pregunta);
 		}
@@ -680,13 +680,13 @@ class MenuPreguntaMateLetras extends MenuModificarJugador {
 }
 
 @SuppressWarnings("serial")
-class MenuPreguntaIngles extends MenuSeleccion {
+class PreguntaIngles extends Seleccion {
 	private Pregunta pregunta;
 	private Jugador jugador;
 	private TerminarPartida salir = new TerminarPartida();
 	private MostradorTexto enunciado;
 
-	protected MenuPreguntaIngles(Pregunta pregunta) {
+	PreguntaIngles(Pregunta pregunta) {
 		super(Consts.TOTAL_OPCIONES_INGLES);
 
 		this.setBackground(Color.PINK);
@@ -741,7 +741,7 @@ class MenuPreguntaIngles extends MenuSeleccion {
 		this.repaint();
 	}
 	
-	public void isCPUJugando() {
+	void isCPUJugando() {
 		if (jugador instanceof Cpu) {
 			JuegoGUI.visuales.mostrarFinPregunta(jugador, ((Cpu)jugador).generarRespuesta(pregunta), pregunta);
 		}
@@ -758,13 +758,13 @@ class MenuPreguntaIngles extends MenuSeleccion {
 }
 
 @SuppressWarnings("serial")
-class MenuFinPregunta extends JPanel {
+class FinPregunta extends JPanel {
 	private Jugador jugador;
 	private String respuesta;
 	private Pregunta pregunta;
 	private String mensaje;
 	
-	public MenuFinPregunta(Jugador jugador, String respuesta, Pregunta pregunta) {
+	FinPregunta(Jugador jugador, String respuesta, Pregunta pregunta) {
 		this.setBackground(Color.PINK);
 
 		this.jugador = jugador;
@@ -774,11 +774,11 @@ class MenuFinPregunta extends JPanel {
 		this.mensaje = this.generarMensaje();
 	}
 	
-	public String getMensaje() {
+	String getMensaje() {
 		return this.mensaje;
 	}
 	
-	public void continuar() {
+	void continuar() {
 		if (Gestor.partida.isTerminada()) {
 			JuegoGUI.visuales.mostrarFinPartida();
 		
@@ -805,8 +805,8 @@ class MenuFinPregunta extends JPanel {
 }
 
 @SuppressWarnings("serial")
-class MenuFinPartida extends JPanel {
-	MenuFinPartida() {
+class FinPartida extends JPanel {
+	FinPartida() {
 		this.setLayout(null);
 		this.setBackground(Color.PINK);
 		
@@ -832,4 +832,7 @@ class MenuFinPartida extends JPanel {
 		g.setFont(new Font(null, Font.BOLD, 20));
 		g.drawString("Resultados finales", 230, 100);
 	}
+}
+
+
 }

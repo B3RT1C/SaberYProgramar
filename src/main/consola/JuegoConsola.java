@@ -8,16 +8,32 @@ import jugadores.Jugador;
 import preguntas.Pregunta;
 import util.Consts;
 
+/**
+ * Clase nucleo donde se juntan todos los metodos del resto de clases para crear un bucle de juego en la consola
+ */
 public class JuegoConsola {
+	/**
+	 * Usado para recoger imputs del usuario por consola
+	 */
 	static Scanner in = new Scanner(System.in);
+	/**
+	 * Instancia de la clase VisualesConsola, usado para mostrar por pantalla mensajes predefinidos
+	 */
 	private VisualesConsola visuales = new VisualesConsola();
-	
+	/**
+	 * Llama al metodo que inicia el bucle principal de juego
+	 * @see loopPrincipal
+	 */
 	public JuegoConsola() {
 		System.out.println(Consts.MENU_TITLE);
 		this.loopPrincipal();
 		JuegoConsola.in.close();
 	}
-	
+	/**
+	 * Permite al usuario elegir entre las siguientes opciones A, B, C, D, E (discrimina mayuscula y minusculas) 
+	 * en caso de no elegir ninguna de estas opciones mostrara un error por pantalla y volvera a pedir un nuevo valor
+	 * @return Opcion validada tras procesamiento
+	 */
 	public String elegirPrincipal() {
 		return this.elegirOpcion("[ABCDE]", true);
 	}

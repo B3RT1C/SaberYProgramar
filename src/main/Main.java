@@ -4,11 +4,18 @@ import main.GUI.JuegoGUI;
 import main.consola.JuegoConsola;
 
 /**
- * Llama al método que inicia el bucle del principal del juego
+ * Contiene el metodo main
  */
 public class Main {
+	/**
+	 * Llama el metodo que se encargara de iniciar todo lo necesrio para que empiece el juego
+	 * @see main.consola
+	 * @see main.GUI
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
-		boolean consola = false; // <- False en caso de querer jugar en GUI
+		boolean consola = true; // <- cambiar a false en caso de querer jugar en GUI
 		
 		if (consola) {
 			new JuegoConsola();
