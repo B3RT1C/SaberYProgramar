@@ -141,6 +141,22 @@ public class Menus {
 	}
 	
 	@SuppressWarnings("serial")
+	public abstract class MostrarPuntuaciones extends JPanel {
+		MostrarPuntuaciones() {
+			this.setLayout(null);
+			this.setBackground(Color.PINK);
+			
+			MostradorTexto enunciado = new MostradorTexto(Gestor.partida.getPuntuaciones());
+			enunciado.setBounds(110, 200, 420, 20);
+			
+			this.add(this.addBoton());
+			this.add(enunciado);
+		}
+		
+		protected abstract JButton addBoton();
+	}
+	
+	@SuppressWarnings("serial")
 	class Principal extends Seleccion {
 		Principal() {
 			super(5);
@@ -832,6 +848,19 @@ public class Menus {
 	
 	@SuppressWarnings("serial")
 	class FinPartida extends MostrarPuntuaciones {
+		public FinPartida() {
+			super();
+			
+			Gestor.historial.escribir(Gestor.partida.getPuntuaciones());
+			
+			for (Jugador i : Gestor.partida.getJugadores()) {
+				Gestor.jugadores.actualizarPuntosRanking(i.getNombre(), i.getPuntosPartida());;
+			}
+			Gestor.jugadores.actualizarRanking();
+			
+			Gestor.log.escribirArchivo(Consts.LOG_FIN_PARTIDA(Gestor.partida.getNumJugadores(), Gestor.partida.getGanador()));
+		}
+		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
