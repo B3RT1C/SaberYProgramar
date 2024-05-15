@@ -14,6 +14,7 @@ public class Partida {
 	
 	private int numJugadores;
 	private boolean jugadoresMezclados = false;
+	private int turnoX;
 	
 	protected Partida() {}
 	
@@ -28,12 +29,17 @@ public class Partida {
 		this.jugadores.clear();
 		this.preguntas.clear();
 		this.ganadores.clear();
+		this.turnoX = 0;
 	}
 	
 	private void generarPreguntas(int numPreguntas) {
 		for (int i = 0; i < numPreguntas; i++) {
 			this.preguntas.add(Pregunta.generarAleatoria());
 		}
+	}
+	
+	public boolean isFinRonda() {
+		return this.turnoX%this.jugadores.size() == 0;
 	}
 	
 	public int getNumJugadores() {
@@ -98,6 +104,7 @@ public class Partida {
 	}
 	
 	public Pregunta nextPregunta() {
+		this.turnoX++;
 		return this.nextEnCola(this.preguntas, false);
 	}
 	

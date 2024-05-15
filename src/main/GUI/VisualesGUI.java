@@ -135,6 +135,11 @@ class VisualesGUI implements Menu {
 		JOptionPane.showMessageDialog(menuFinPregunta, menuFinPregunta.getMensaje());
 		menuFinPregunta.continuar();
 	}
+	
+	@Override
+	public void mostrarFinRonda() {
+		this.cambiarJPanel(menu.new FinRonda(), false);
+	}
 
 	@Override
 	public void mostrarFinPartida() {

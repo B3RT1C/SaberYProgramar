@@ -10,8 +10,14 @@ import preguntas.Ingles;
 import preguntas.Pregunta;
 import util.Consts;
 
+/**
+ * Esta clase maneja todo lo relacionado con mostrar menus e informacion por consola
+ */
 public class VisualesConsola implements Menu {
-	
+	/**
+	 * Constructor de la clase, visibilidad asignada a solo el paquete para solo poder ser insatanciado en la clase JuegoConsola
+	 * @see JuegoConsola
+	 */
 	VisualesConsola() {}
 	
 	@Override
@@ -24,7 +30,7 @@ public class VisualesConsola implements Menu {
 						 + "e) Salir -> Termina el programa"
 						 + "\n");
 	}
-	
+
 	@Override
 	public void mostrarGestorJugadores() {
 		System.out.println("\n"
@@ -34,7 +40,7 @@ public class VisualesConsola implements Menu {
 				 + "d) Volver -> Vuelve al menú principal\n"
 				 + "\n");
 	}
-	
+
 	@Override
 	public void mostrarJugadores() {
 		this.mostrarContenidoArchivo(Gestor.jugadores.getNombres());
@@ -54,7 +60,7 @@ public class VisualesConsola implements Menu {
 		JuegoConsola.in.nextLine();
 		System.out.println(Consts.MENU_VOLVER);
 	}
-
+	
 	@Override
 	public void mostrarRanking() {
 		System.out.println();
@@ -72,14 +78,14 @@ public class VisualesConsola implements Menu {
 	public void mostrarElegirJugador() {
 		System.out.println("\n"+Consts.MENU_ADD_JUGADOR);
 		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
-	}
-	
+	}	
+
 	@Override
 	public void mostrarEliminarJugador() {
 		System.out.println("\n"+Consts.MENU_REMOVE_JUGADOR);
 		System.out.println(Consts.MENU_FORMATEO_NOMBRES);
 	}
-	
+
 	@Override
 	public void mostrarElegirRondas() {
 		System.out.println("\n"
@@ -95,7 +101,7 @@ public class VisualesConsola implements Menu {
 	public void mostrarElegirJugadorPartida() {
 		this.mostrarElegirJugador();
 	}
-	
+
 	@Override
 	public void mostrarPregunta(Pregunta pregunta) {
 		System.out.println(pregunta.getEnunciado());
@@ -113,7 +119,7 @@ public class VisualesConsola implements Menu {
 		if (jugador instanceof Cpu) {
 			System.out.println(respuesta);
 		}
-
+		
 		if (jugador.responder(respuesta , pregunta)) {
 			System.out.println(Consts.PREGUNTA_ACERTADA+"\n");
 		
@@ -126,6 +132,13 @@ public class VisualesConsola implements Menu {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
+		}
+	}
+	
+	@Override
+	public void mostrarFinRonda() {
+		if (Gestor.partida.isFinRonda() && !Gestor.partida.isTerminada()) {
+			System.out.println("\nFin de la ronda: \n"+Gestor.partida.getPuntuaciones()+"\n");
 		}
 	}
 

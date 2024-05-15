@@ -31,13 +31,14 @@ public class JuegoConsola {
 	}
 	/**
 	 * Permite al usuario elegir entre las siguientes opciones A, B, C, D, E (discrimina mayuscula y minusculas) 
-	 * en caso de no elegir ninguna de estas opciones mostrara un error por pantalla y volvera a pedir un nuevo valor
-	 * @return Opcion validada tras procesamiento
+	 * @return Opcion validada
 	 */
 	public String elegirPrincipal() {
 		return this.elegirOpcion("[ABCDE]", true);
 	}
-	
+	/**
+	 * Loop principal de juego, muestra y permite elegir entre varios menus secundarios
+	 */
 	private void loopPrincipal() {
 		String opcion;
 		do {
@@ -70,11 +71,15 @@ public class JuegoConsola {
 			}
 		} while (!opcion.equals("E"));
 	}
-
+	/*
+	 * Permite al usuario elegir entre las siguientes opciones A, B, C, D (discrimina mayuscula y minusculas) 
+	 */
 	public String elegirGestorJugadores() {
 		return this.elegirOpcion("[ABCD]", true);
 	}
-	
+	/*
+	 * Loop de gestion de jugadores, muestra y permite elegir entre varios menus que permiten hacer ciertas operaciones con los jugadores
+	 */
 	private void loopGestorjugadores() {
 		String opcion;
 		do {
@@ -102,7 +107,10 @@ public class JuegoConsola {
 			}
 		} while (!opcion.equals("D"));
 	}
-	
+	/**
+	 * Permite añadir un jugador al sistema, se pedira un String nombre al usuario para crear el jugador nuevo, 
+	 * si el nombre está en uso mostrará un error y no se creara el jugador (discrimina las mayusculas y minusculas)
+	 */
 	private void addJugador() {
 		String nombre = in.nextLine();
 		if (Gestor.jugadores.crearJugador(nombre)) {
@@ -114,7 +122,10 @@ public class JuegoConsola {
 		}
 		System.out.println(Consts.MENU_VOLVER+"\n");
 	}
-	
+	/**
+	 * Permite eliminar un jugador del sistema, se pedira un String nombre al usuario para borrar al jugador con ese nombre del sistema,
+	 * si el jugador no existe en el sistema se mostrará un error (discrimina las mayusculas y minuscula)
+	 */
 	private void removeJugador() {
 		String nombre = in.nextLine().toUpperCase();
 		if (Gestor.jugadores.removeJugador(nombre)) {
@@ -126,7 +137,10 @@ public class JuegoConsola {
 		}
 		System.out.println(Consts.MENU_VOLVER+"\n");
 	}
-
+	/**
+	 * Permite elegir el numero maximo de jugadores de la partida (1 min - 4 max), se elegiran tambien de ese maximo de jugadores cuantos seran humanos y cuantos CPUs
+	 * @return Un array de ints con dos posicione 0 = numJugadores, 1 = numHumanos (numCPUs será la resta de esos dos números)
+	 */
 	public int[] elegirCantidadJugadores() {
 		int numJugadores = Integer.valueOf(this.elegirOpcion("[1234]", true));
 		
@@ -137,7 +151,10 @@ public class JuegoConsola {
 		
 		return new int[]{numJugadores, numHumanos};
 	}
-
+	/**
+	 * Pide al usuario un String nombre de un jugador vara verificar si existe, si no existe se dara la opcion de crearlo en el momento,
+	 * @return Si el jugador existe o es creado en el momento devuelve el nombre del jugador, si el jugador no existe y no se crea en el momento devuelve null
+	 */
 	public String elegirJugador() {
 		String nombre = this.elegirOpcion("CPU\\d*", false);
 		
@@ -155,7 +172,10 @@ public class JuegoConsola {
 		
 		return nombre;
 	}
-
+	/**
+	 * Pemite elegir al usuario entre un número predeterminado de rondas (3, 5, 10 ,20)
+	 * @return El numero de rondas seleccionado, si se hace una seleccion con un valor no valido se devuelven 3 rondas
+	 */
 	public int elegirRondas() {
 		String opcion = this.elegirOpcion("[ABCD]", true);
 
@@ -178,6 +198,13 @@ public class JuegoConsola {
 	}
 	}
 	
+	/**
+	 * Permite dado un patron crear un bucle infinito hasta que se introduca por consola un valor que cunpla con el patron
+	 * @param patron Patron que ha de cumplirse
+	 * @param toMatch true = indica que el bucle seguira mientras el valor introducido no coincida con el patron,
+	 * 				  false = indica que el bicle seguira mientras el valor introducido coincida con el patron
+	 * @return La opcion que cumple o no con el patron, dependiendo del valor de toMatch
+	 */
 	//toMatch = true para que pida valores nuevos hasta cumplir el patrón y toMatch = false para que pida valores nuevos hasta no cumplir el patrón 
 	private String elegirOpcion(String patron, boolean toMatch) {
 		String opcion = in.nextLine().toUpperCase();
@@ -188,7 +215,10 @@ public class JuegoConsola {
 		}
 		return opcion;
 	}
-	
+	/**
+	 * Se llaman a los metodos para pedir valores necesarios para la inicializacion de la partida (numJugadores, numRondas),
+	 * se añaden los jugadores seleccionados a la partida y se generan las preguntas
+	 */
 	private void partidaStartup() {
 		visuales.mostrarElegirRondas();
 		int numRondas = this.elegirRondas();
@@ -221,7 +251,9 @@ public class JuegoConsola {
 		
 		Gestor.log.escribirArchivo(Consts.LOG_INICIO_PARTIDA(numHumanos, numCpu));
 	}
-	
+	/**
+	 * Loop en el que se juega una partida tras ser creada
+	 */
 	private void loopJuego() {
 		while (!Gestor.partida.isTerminada()) {
 			Jugador jugador = Gestor.partida.nextJugador();
@@ -240,13 +272,21 @@ public class JuegoConsola {
 			String respuesta = this.elegirRespuesta(jugador, pregunta);
 
 			this.visuales.mostrarFinPregunta(jugador, respuesta, pregunta);
+			this.visuales.mostrarFinRonda();
 		}
 	}
-	
+	/**
+	 * Maneja la accion de responder una pregunta, si el jugador es humano tendra que responder por teclado, si el jugador es CPU se generara una respuesta automatica
+	 * @param jugador Jugador al que le toca responder la pregunta
+	 * @param pregunta Pregunta a responder
+	 * @return Respuesta a la pregunta
+	 */
 	private String elegirRespuesta(Jugador jugador, Pregunta pregunta) {
 		return jugador instanceof Cpu? ((Cpu)jugador).generarRespuesta(pregunta) : in.nextLine();
 	}
-	
+	/**
+	 * Llama a todos los metodos necesarios para finalizar una partida, se actualiza el historial de partidas y el ranking
+	 */
 	private void partidaCloseup() {
 		Gestor.historial.escribir(Gestor.partida.getPuntuaciones());
 		
