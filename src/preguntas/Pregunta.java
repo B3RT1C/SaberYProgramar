@@ -35,7 +35,8 @@ public abstract class Pregunta {
 	protected abstract String generarSolucion();
 	
 	/**
-	 * Metodo estatico que funciona como herramienta principal para generar una pregunta, controla las excepciones lanzadas por los constructores de las subclases
+	 * Metodo estatico que funciona como herramienta principal para generar una pregunta, 
+	 * en el caso de que durante la creacion de una pregunta de letras o ingles se lance una excepcion se creara una pregunta de mates
 	 * @return Instancia de una subclase de Pregunta ya inicializada y lista para su uso
 	 */
 	public static Pregunta generarAleatoria() {
