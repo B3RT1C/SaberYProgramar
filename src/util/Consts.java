@@ -158,7 +158,7 @@ public class Consts {
 	 * Metodo que devuelve un registro a escribir en el log que contiene informacion sobre el fin de la partida
 	 * @param numJugadores Numero de jugadores de la partida
 	 * @param ganador ArrayList<String> con el nombre de los jugadores que han ganado la partida
-	 * @return
+	 * @return String con el mensaje
 	 */
 	public static final String LOG_FIN_PARTIDA(int numJugadores, ArrayList<String> ganador) {
 		String mensaje = "Fin partida con " + numJugadores + " jugador/es. ";
@@ -182,20 +182,57 @@ public class Consts {
 		
 		return mensaje;
 	}
+	/**
+	 * Registro del log cuando ocurre un error
+	 */
 	public static final String LOG_ERROR = "ERROR. Se ha producido un error en la aplicación: ";
 	
+	/**
+	 * Titulo del menu principal
+	 */
 	public static final String MENU_TITLE = "SABER Y PROGRAMAR";
+	/**
+	 * Mensaje que indica al usuario cuando se esta saliendo del programa
+	 */
 	public static final String MENU_SALIR = "Saliendo...";
+	/**
+	 * Mensaje que indica al usuario cuando se esta volviendo de un menu a otro
+	 */
 	public static final String MENU_VOLVER = "Volviendo...";
+	/**
+	 * Mensaje que informa al usuario el formateo que llevaran los nombres de los jugadores
+	 */
 	public static final String MENU_FORMATEO_NOMBRES = "Las mayúscula y minúsculas serán ignoradas en los nombres de los jugadores";
+	/**
+	 * Mensaje que le indica al usuario cuando tiene que introducir un nombre de un jugador para añadirlo
+	 */
 	public static final String MENU_ADD_JUGADOR = "Escribe un nombre para añadir un jugador";
+	/**
+	 * Mensaje que le indica al usuario que un jugador no existe y le pregunta si quiere crearlo
+	 * @param nombre Nombre del jugador
+	 * @return String con el mensaje
+	 */
 	public static String MENU_ADD_JUGADOR_INEXISTENTE(String nombre) {
 		return "El jugador: " + nombre.toUpperCase() + " no existe en el sistema, ¿quieres añadirlo?";
 	}
+	/**
+	 * Mensaje de error al añadir un jugador
+	 */
 	public static final String MENU_ADD_JUGADOR_ERROR = "El nombre del jugador que has introducido no es válido";
+	/**
+	 * Mensaje que le indica al usuario cuan tiene que introducir un nombre de jugador para eliminarlo
+	 */
 	public static final String MENU_REMOVE_JUGADOR = "Escribe un nombre de un jugador para borrarlo del sistema";
+	/*
+	 * Mensaje de error al eliminar un jugador
+	 */
 	public static final String MENU_REMOVE_JUGADOR_ERROR = "El jugador que has introducido no existe en el sistema";
+	/**
+	 * Mensaje generico para cuando una accion ha terminado satisfactoriamente
+	 */
 	public static final String MENU_SUCCEED = "Acción realizada con éxito";
-	
+	/**
+	 * Mensaje que informa cuando una busqueda no ha devuelto informacion
+	 */
 	public static final String MENU_CERO_CONTENIDO = "No existe información para esta opción";
 }

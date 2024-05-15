@@ -7,11 +7,23 @@ import java.util.Collections;
 
 import gestores.Gestor;
 import util.Consts;
-
+/**
+ * Representa un pregunta de ingles, lee del archivo file/ingles.txt
+ */
 public class Ingles extends Pregunta {
+	/**
+	 * Contiene la informacion del archivo
+	 */
 	public static ArrayList<String> preguntasRespuestas = new ArrayList<>();
+	/**
+	 * Contiene las opciones posibles para una pregunta especifica
+	 */
 	private ArrayList<String> opciones = new ArrayList<>();
 	
+	/**
+	 * Constructor de la clase
+	 * @throws IOException
+	 */
 	public Ingles() throws IOException {
 		this.leerArchivo();
 		super.setEnunciado(this.generarEnunciado());
@@ -19,17 +31,26 @@ public class Ingles extends Pregunta {
 		super.setSolucion(this.generarSolucion());
 		this.mezclarOpciones();
 	}
-	
+
 	public ArrayList<String> getOpciones() {
 		return opciones;
 	}
 	
+	/**
+	 * Lee del archivo y almacena su contenido en el ArrayList estatico preguntasRespuestas,
+	 * en el caso de que el archivo ya haya sido leido, no se volvera a leer
+	 * @see preguntasRespuestas
+	 * @throws IOException
+	 */
 	public void leerArchivo() throws IOException {
 		if (preguntasRespuestas.isEmpty()) {
 			preguntasRespuestas = (ArrayList<String>)Files.readAllLines(Consts.PATH_INGLES);
 		}
 	}
-	
+	/**
+	 * Añade al ArrayList opciones las opciones correspondientes al enunciado
+	 * @see opciones
+	 */
 	protected void generarOpciones() {
 		int indiceEnunciado = preguntasRespuestas.indexOf(this.getEnunciado());
 		//El número de respuestas de cada enunciado son 4 y cada uno ocupa una linea por lo que sus índices son el del enunciado+(1,2,3,4)
@@ -37,7 +58,10 @@ public class Ingles extends Pregunta {
 			opciones.add(preguntasRespuestas.get(indiceEnunciado +i));			
 		}
 	}
-
+	/**
+	 * Deshordena las opciones del ArrayList opciones
+	 * @see opciones
+	 */
 	protected void mezclarOpciones() {
 		Collections.shuffle(opciones);
 	}

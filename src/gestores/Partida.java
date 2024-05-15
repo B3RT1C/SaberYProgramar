@@ -6,13 +6,30 @@ import java.util.Collections;
 import jugadores.Cpu;
 import jugadores.Jugador;
 import preguntas.Pregunta;
-
+/**
+ * Clase encargada de gestionar los jugadores y preguntas de la partida, proporciona herramientas para facilitar la gestion de la partida
+ */
 public class Partida {
+	/**
+	 * ArrayList<String> en el cual contendra los ganadores de la partida
+	 */
 	private ArrayList<String> ganadores = new ArrayList<>();
+	/**
+	 * ArrayList<Jugador> en el cual se almacenan los jugadores de la partida
+	 */
 	private ArrayList<Jugador> jugadores = new ArrayList<>();
+	/**
+	 * ArrayList<Pregunta> en el cual se almacenan las preguntas de la partida
+	 */
 	private ArrayList<Pregunta> preguntas = new ArrayList<>();
 	
+	/**
+	 * Numero de jugadores
+	 */
 	private int numJugadores;
+	/**
+	 * Variable que almacena true si los jugadores han sido mezclados
+	 */
 	private boolean jugadoresMezclados = false;
 	private int turnoX;
 	

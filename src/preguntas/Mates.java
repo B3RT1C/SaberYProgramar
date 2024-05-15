@@ -4,8 +4,13 @@ import gestores.Gestor;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import util.Consts;
-
+/**
+ * Representa una pregutna de matematicas
+ */
 public class Mates extends Pregunta {
+	/**
+	 * Constructor de la clase
+	 */
 	protected Mates() {
 		super.setEnunciado(this.generarEnunciado());
 		super.setSolucion(this.generarSolucion());

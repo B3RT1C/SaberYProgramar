@@ -192,7 +192,7 @@ public class Menus {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.setFont(new Font(null, Font.BOLD, 20));
-			g.drawString("Saber Y Programar", 230, 100);
+			g.drawString(Consts.MENU_TITLE, 230, 100);
 		}
 	}
 	
